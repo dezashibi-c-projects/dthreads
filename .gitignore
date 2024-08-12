@@ -1,5 +1,5 @@
 *.pdb
 *.o
-releases
+*.zip
 *.exe
 *.out

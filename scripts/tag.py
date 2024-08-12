@@ -1,7 +1,23 @@
 import subprocess
-import re
+import zipfile
+import os
 
-release_files = ['dmmap.h']
+folder_to_zip = 'dthreads'
+release_files = [f"{folder_to_zip}.zip"]
+
+def zip_folder(folder_path, output_filename):
+    folder_name = os.path.basename(folder_path.rstrip('/\\'))
+    folder_path = os.path.abspath(folder_path)
+    
+    with zipfile.ZipFile(output_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                # Create the full file path
+                full_path = os.path.join(root, file)
+                # Create the archive name by joining the folder name with the relative path
+                arcname = os.path.join(folder_name, os.path.relpath(full_path, folder_path))
+                zipf.write(full_path, arcname)
+
 
 # Step 1: Extract the version and description from CHANGE_LOGS.md
 def extract_version_and_description():
@@ -54,6 +70,8 @@ def main():
     
     print(f"Extracted version: {version}")
     print(f"Tag description:\n{description}")
+
+    zip_folder(folder_to_zip, f"{folder_to_zip}.zip")
     
     if create_and_push_tag(version, description) and create_github_release(version, description):
         print(f"Successfully created release for version {version}.")
