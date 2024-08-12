@@ -1,0 +1,15 @@
+{
+    "cSpell.words": [
+        "DETACHSTATE",
+        "DTHREAD",
+        "dthreads",
+        "INHERITSCHED",
+        "PRIOCEILING",
+        "PSHARED",
+        "SCHEDPOLICY"
+    ],
+    "files.associations": {
+        "dthread.h": "c",
+        "posix.h": "c"
+    }
+}
