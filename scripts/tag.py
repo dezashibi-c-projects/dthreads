@@ -49,6 +49,9 @@ def create_and_push_tag(version, description):
 def create_github_release(version, description):
     if any(key in version for key in ["stable", "rc", "beta"]):
         try:
+            if folder_to_zip != '':
+                zip_folder(folder_to_zip, f"{folder_to_zip}.zip")
+
             release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description, '--latest']
             if "stable" not in version:
                 release_command.append('--prerelease')
@@ -70,8 +73,6 @@ def main():
     
     print(f"Extracted version: {version}")
     print(f"Tag description:\n{description}")
-
-    zip_folder(folder_to_zip, f"{folder_to_zip}.zip")
     
     if create_and_push_tag(version, description) and create_github_release(version, description):
         print(f"Successfully created release for version {version}.")
