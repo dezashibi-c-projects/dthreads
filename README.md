@@ -73,8 +73,6 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
   - **dthread_semaphore_post**: Posts to a semaphore, incrementing its value.
   - **dthread_semaphore_destroy**: Destroys the semaphore, releasing its resources.
 
-Certainly! Below is the documentation for all the macros used in the DThreads library. Each macro's purpose and usage are explained in detail to avoid any confusion.
-
 ### **Macro Documentation**
 
 #### **1. `DTHREAD_RWLOCK_AVAILABLE`**
