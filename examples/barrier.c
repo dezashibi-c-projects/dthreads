@@ -29,19 +29,23 @@ int main()
     DThread threads[NUM_THREADS];
     DThreadConfig thread_configs[NUM_THREADS];
 
+    // Initialize barrier
     dthread_barrier_init(&barrier, NUM_THREADS);
 
+    // Create threads
     for (intptr_t i = 0; i < NUM_THREADS; ++i)
     {
         thread_configs[i] = dthread_config_init(thread_func, i);
         dthread_create(&threads[i], NULL, &thread_configs[i]);
     }
 
+    // Wait for all threads to finish
     for (int i = 0; i < NUM_THREADS; ++i)
     {
         dthread_join(threads[i], NULL);
     }
 
+    // Cleanup barrier
     dthread_barrier_destroy(&barrier);
 
     return 0;
