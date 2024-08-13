@@ -115,6 +115,20 @@ This macro is used to control the logging of debug information within the DThrea
 
 ## Usage Guide
 
+**👉 NOTE: You can get the the latest for the latest `rc` or `beta` and/or get the latest stable version from releases. you can use the following commands:**
+
+- the latest release:
+
+```bash
+ wget https://github.com/dezashibi-c/dthreads/releases/download/$(curl -s https://api.github.com/repos/dezashibi-c/dthreads/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')/dthreads.zip
+```
+
+- the specific version (remember to change `<version>` with the version you need)
+
+```bash
+https://github.com/dezashibi-c/dthreads/releases/download/<version>/dthreads.zip
+```
+
 ### Including DThreads in Your Project
 
 **👉 NOTE: Make sure `#define DTHREAD_IMPL` is included in exactly one of your source files.**
