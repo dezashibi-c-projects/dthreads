@@ -55,7 +55,7 @@ int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config)
             pthread_attr_setstacksize(&p_attr, attr->stacksize);
     }
 
-    return pthread_create(&thread->handle, attr ? &p_attr : NULL, config->func, &config->args);
+    return pthread_create(&thread->handle, attr ? &p_attr : NULL, config->func, config->args);
 }
 
 int dthread_detach(DThread thread)
@@ -287,6 +287,38 @@ void dthread_barrier_destroy(DThreadBarrier* barrier)
     dthread_debug("dthread_barrier_destroy");
 
     pthread_barrier_destroy(&barrier->handle);
+}
+
+#endif
+
+#ifdef DTHREAD_SEMAPHORE_AVAILABLE
+
+int dthread_semaphore_init(DThreadSemaphore* semaphore, unsigned int initial_value)
+{
+    dthread_debug("dthread_semaphore_init");
+
+    return sem_init(&semaphore->handle, 0, initial_value);
+}
+
+int dthread_semaphore_wait(DThreadSemaphore* semaphore)
+{
+    dthread_debug("dthread_semaphore_wait");
+
+    return sem_wait(&semaphore->handle);
+}
+
+int dthread_semaphore_post(DThreadSemaphore* semaphore)
+{
+    dthread_debug("dthread_semaphore_post");
+
+    return sem_post(&semaphore->handle);
+}
+
+int dthread_semaphore_destroy(DThreadSemaphore* semaphore)
+{
+    dthread_debug("dthread_semaphore_destroy");
+
+    return sem_destroy(&semaphore->handle);
 }
 
 #endif
