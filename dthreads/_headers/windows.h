@@ -22,6 +22,7 @@
 
 #define DTHREAD_RWLOCK_AVAILABLE
 #define DTHREAD_CREATION_FLAG_AVAILABLE
+#define DTHREAD_BARRIER_AVAILABLE
 
 typedef struct DThread
 {
@@ -54,10 +55,28 @@ typedef struct DThreadCondAttr
     void* nothing;
 } DThreadCondAttr;
 
+#ifdef DTHREAD_RWLOCK_AVAILABLE
+
 typedef struct DThreadRWLock
 {
     int type;
     PSRWLOCK handle;
 } DThreadRWLock;
+
+#endif
+
+#ifdef DTHREAD_BARRIER_AVAILABLE
+
+typedef struct DThreadBarrier
+{
+    CRITICAL_SECTION cs;
+    CONDITION_VARIABLE cv;
+    int count;
+    int waiting;
+
+    int num_threads;
+} DThreadBarrier;
+
+#endif
 
 #endif // DTHREAD_WINDOWS_H_

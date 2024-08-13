@@ -264,3 +264,29 @@ int dthread_rwlock_destroy(DThreadRWLock* rwlock)
 }
 
 #endif
+
+#ifdef DTHREAD_BARRIER_AVAILABLE
+
+void dthread_barrier_init(DThreadBarrier* barrier, int num_threads)
+{
+    dthread_debug("dthread_barrier_init");
+
+    pthread_barrier_init(&barrier->handle, NULL, num_threads);
+    barrier->num_threads = num_threads;
+}
+
+void dthread_barrier_wait(DThreadBarrier* barrier)
+{
+    dthread_debug("dthread_barrier_wait");
+
+    pthread_barrier_wait(&barrier->handle);
+}
+
+void dthread_barrier_destroy(DThreadBarrier* barrier)
+{
+    dthread_debug("dthread_barrier_destroy");
+
+    pthread_barrier_destroy(&barrier->handle);
+}
+
+#endif

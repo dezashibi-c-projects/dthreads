@@ -48,6 +48,7 @@
 
 #define DTHREAD_RWLOCK_AVAILABLE
 #define DTHREAD_COND_CLOCK_AVAILABLE
+#define DTHREAD_BARRIER_AVAILABLE
 
 #if (defined(__linux__) || defined(__FreeBSD__)) && !defined __ANDROID__
 #define DTHREAD_MUTEX_ROBUST_AVAILABLE
@@ -120,6 +121,15 @@ typedef struct DThreadRWLock
 {
     pthread_rwlock_t handle;
 } DThreadRWLock;
+#endif
+
+#ifdef DTHREAD_BARRIER_AVAILABLE
+typedef struct DThreadBarrier
+{
+    pthread_barrier_t handle;
+
+    int num_threads;
+} DThreadBarrier;
 #endif
 
 #endif // DTHREAD_POSIX_H_

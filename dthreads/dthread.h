@@ -100,6 +100,14 @@ int dthread_rwlock_destroy(DThreadRWLock* rwlock);
 
 #endif
 
+#ifdef DTHREAD_BARRIER_AVAILABLE
+
+void dthread_barrier_init(DThreadBarrier* barrier, int num_threads);
+void dthread_barrier_wait(DThreadBarrier* barrier);
+void dthread_barrier_destroy(DThreadBarrier* barrier);
+
+#endif
+
 #ifdef DTHREAD_IMPL
 #if defined(_WIN32) || defined(_WIN64)
 

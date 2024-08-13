@@ -266,3 +266,45 @@ int dthread_rwlock_destroy(DThreadRWLock* rwlock)
 }
 
 #endif
+
+#ifdef DTHREAD_BARRIER_AVAILABLE
+
+void dthread_barrier_init(DThreadBarrier* barrier, int num_threads)
+{
+    dthread_debug("dthread_barrier_init");
+
+    InitializeCriticalSection(&barrier->cs);
+    InitializeConditionVariable(&barrier->cv);
+    barrier->count = num_threads;
+    barrier->waiting = 0;
+    barrier->num_threads = num_threads;
+}
+
+void dthread_barrier_wait(DThreadBarrier* barrier)
+{
+    dthread_debug("dthread_barrier_wait");
+
+    EnterCriticalSection(&barrier->cs);
+    barrier->waiting++;
+
+    if (barrier->waiting < barrier->count)
+    {
+        SleepConditionVariableCS(&barrier->cv, &barrier->cs, INFINITE);
+    }
+    else
+    {
+        barrier->waiting = 0;
+        WakeAllConditionVariable(&barrier->cv);
+    }
+
+    LeaveCriticalSection(&barrier->cs);
+}
+
+void dthread_barrier_destroy(DThreadBarrier* barrier)
+{
+    dthread_debug("dthread_barrier_destroy");
+
+    DeleteCriticalSection(&barrier->cs);
+}
+
+#endif
