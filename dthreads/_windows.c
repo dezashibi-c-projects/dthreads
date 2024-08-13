@@ -28,6 +28,8 @@ int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config)
 {
     dthread_debug("dthread_create");
 
+    assert(config && "Config cannot be NULL in dthread_create");
+
     if (attr)
         thread->handle = CreateThread(NULL, attr->stacksize ? attr->stacksize : 0, _dthread_winapi_function_wrapper, config, attr->dwCreationFlags ? (DWORD)attr->dwCreationFlags : 0, NULL);
     else
@@ -82,7 +84,7 @@ void dthread_exit(void* code)
 {
     dthread_debug("dthread_exit");
 
-#if defined __WATCOMC__ || _MSC_VER || __DMC__
+#if defined(__WATCOMC__) || defined(_MSC_VER) || defined(__DMC__)
     ExitThread((DWORD)code);
 #else
     ExitThread((DWORD)(uintptr_t)code);

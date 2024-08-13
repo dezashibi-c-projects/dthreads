@@ -43,10 +43,11 @@ typedef struct
     void* args;
 } DThreadConfig;
 
-#define dthread_define_config(NAME, FUNC, ARGS) \
-    DThreadConfig NAME = {                      \
-        .func = FUNC,                           \
-        .args = (void*)(ARGS),                  \
+#define dthread_config_init(FUNC, ARGS) \
+    (DThreadConfig)                     \
+    {                                   \
+        .func = FUNC,                   \
+        .args = (void*)(ARGS),          \
     }
 
 int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config);

@@ -1,5 +1,6 @@
 #define DTHREAD_IMPL
 #include "../dthreads/dthread.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -33,7 +34,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    dthread_define_config(conf, summation, &arg);
+    DThreadConfig conf = dthread_config_init(summation, &arg);
 
     if (dthread_create(&thread, NULL, &conf) != 0)
     {

@@ -20,6 +20,8 @@ int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config)
 {
     dthread_debug("dthread_create");
 
+    assert(config && "Config cannot be NULL in dthread_create");
+
     pthread_attr_t p_attr;
 
     if (attr)
