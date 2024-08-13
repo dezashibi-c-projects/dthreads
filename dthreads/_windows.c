@@ -84,7 +84,7 @@ void dthread_exit(void* code)
 {
     dthread_debug("dthread_exit");
 
-#if defined(__WATCOMC__) || defined(_MSC_VER) || defined(__DMC__)
+#if (defined(__WATCOMC__) || defined(_MSC_VER) || defined(__DMC__))
     ExitThread((DWORD)code);
 #else
     ExitThread((DWORD)(uintptr_t)code);
@@ -305,6 +305,39 @@ void dthread_barrier_destroy(DThreadBarrier* barrier)
     dthread_debug("dthread_barrier_destroy");
 
     DeleteCriticalSection(&barrier->cs);
+}
+
+#endif
+
+#ifdef DTHREAD_SEMAPHORE_AVAILABLE
+
+int dthread_semaphore_init(DThreadSemaphore* semaphore, unsigned int initial_value)
+{
+    dthread_debug("dthread_semaphore_init");
+
+    semaphore->handle = CreateSemaphore(NULL, initial_value, LONG_MAX, NULL);
+    return semaphore->handle ? 0 : -1;
+}
+
+int dthread_semaphore_wait(DThreadSemaphore* semaphore)
+{
+    dthread_debug("dthread_semaphore_wait");
+
+    return WaitForSingleObject(semaphore->handle, INFINITE) == WAIT_OBJECT_0 ? 0 : -1;
+}
+
+int dthread_semaphore_post(DThreadSemaphore* semaphore)
+{
+    dthread_debug("dthread_semaphore_post");
+
+    return ReleaseSemaphore(semaphore->handle, 1, NULL) ? 0 : -1;
+}
+
+int dthread_semaphore_destroy(DThreadSemaphore* semaphore)
+{
+    dthread_debug("dthread_semaphore_destroy");
+
+    return CloseHandle(semaphore->handle) ? 0 : -1;
 }
 
 #endif

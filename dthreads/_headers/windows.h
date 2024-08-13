@@ -23,6 +23,7 @@
 #define DTHREAD_RWLOCK_AVAILABLE
 #define DTHREAD_CREATION_FLAG_AVAILABLE
 #define DTHREAD_BARRIER_AVAILABLE
+#define DTHREAD_SEMAPHORE_AVAILABLE
 
 typedef struct DThread
 {
@@ -76,6 +77,15 @@ typedef struct DThreadBarrier
 
     int num_threads;
 } DThreadBarrier;
+
+#endif
+
+#ifdef DTHREAD_SEMAPHORE_AVAILABLE
+
+typedef struct DThreadSemaphore
+{
+    HANDLE handle;
+} DThreadSemaphore;
 
 #endif
 

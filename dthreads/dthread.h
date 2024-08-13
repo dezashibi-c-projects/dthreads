@@ -22,7 +22,7 @@ extern "C"
 {
 #endif
 
-#if defined(_WIN32) || defined(_WIN64)
+#if (defined(_WIN32) || defined(_WIN64))
 
 #include "_headers/windows.h"
 
@@ -113,8 +113,20 @@ extern "C"
 
 #endif
 
+#ifdef DTHREAD_SEMAPHORE_AVAILABLE
+
+    int dthread_semaphore_init(DThreadSemaphore* semaphore, unsigned int initial_value);
+
+    int dthread_semaphore_wait(DThreadSemaphore* semaphore);
+
+    int dthread_semaphore_post(DThreadSemaphore* semaphore);
+
+    int dthread_semaphore_destroy(DThreadSemaphore* semaphore);
+
+#endif
+
 #ifdef DTHREAD_IMPL
-#if defined(_WIN32) || defined(_WIN64)
+#if (defined(_WIN32) || defined(_WIN64))
 
 #include "_windows.c"
 
