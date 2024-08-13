@@ -1,4 +1,5 @@
 *.pdb
+*.obj
 *.o
 *.zip
 *.exe
