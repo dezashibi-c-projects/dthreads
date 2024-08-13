@@ -1,10 +1,12 @@
 # DThreads: Cross-Platform Threading Library in C
 
+👉 I developed this library as a re-imagined and re-implemented version of [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo), which served as the initial inspiration. After using `CThreads` at [a specific commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd), I found the need to adapt it to fit [my coding style](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and preferences, resulting in a simpler and more feature-rich version. While this library is based on the ideas from `CThreads`, it is a significant re-implementation with additional functionality and design choices.
+
+In accordance with the original BSD 2-Clause License of `CThreads`, I acknowledge the work of [@ThePedroo](https://github.com/ThePedroo). This project includes substantial re-implementations, modifications and additions, and is distributed under the BSD 3-Clause License. The original CThreads license is included in this project, ensuring compliance with open-source licensing requirements.
+
 ## Overview
 
 DThreads is a cross-platform threading library designed for C programmers who need a consistent and simple API to manage threads, synchronization primitives, and other concurrency utilities across different operating systems. It abstracts the complexities of native threading APIs like POSIX threads and Windows threads, providing a unified interface that works seamlessly on both platforms.
-
-**👉 NOTE:** I got the idea by looking at a library called [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo). I have used it a couple of times when it was at [this commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd) and I've needed to sort of hacking it and making a newer and simpler version of it based on [my coding style and tastes](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and also add more features to it. This is in fact a hacky and re-imagined and re-implementation of `CThreads` library.
 
 ## Design Philosophy
 
@@ -231,8 +233,8 @@ dthread_barrier_destroy(&barrier);
 
 Please refer to [my coding style guide](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) if you'd like to contribute.
 
-## License for `dthreads` library
+## License
 
-BSD 3-Clause License
+This project is licensed under the BSD 3-Clause License.
 
-Please refer to [LICENSE](/LICENSE) file.
+Parts of this project are derived from the CThreads library by [@ThePedroo](https://github.com/ThePedroo), which is licensed under the BSD 2-Clause License. The original license is included in the [LICENSE](/LICENSE) file to comply with the terms of the BSD 2-Clause License.

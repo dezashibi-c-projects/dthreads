@@ -1,4 +1,4 @@
-## v0.8.1-beta
+## v0.8.2-beta
 
 **Release Date: 2024-08-13**
 
@@ -8,7 +8,8 @@
 - add barrier example
 - fix bugs in windows and linux implementations about double reference
 - improve macro usages
-- - add documentations
+- add documentations
+- license clarification
 
 =======
 
