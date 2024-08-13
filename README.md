@@ -237,4 +237,4 @@ Please refer to [my coding style guide](https://github.com/dezashibi-c/.github/b
 
 This project is licensed under the BSD 3-Clause License.
 
-Some parts of this project are derived from the CThreads library by [@ThePedroo](https://github.com/ThePedroo), which is licensed under the BSD 2-Clause License. To comply with the terms of the BSD 2-Clause License, a copy of the original CThreads license is included in this repository under the [LICENSE](/LICENSE) file.
+Some parts of this project are derived from the `CThreads` library by [@ThePedroo](https://github.com/ThePedroo), which is licensed under the BSD 2-Clause License. To comply with the terms of the BSD 2-Clause License, a copy of the original `CThreads` license is included in this repository under the [LICENSE](/LICENSE) file.
