@@ -77,39 +77,39 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 
 ### **Macro Documentation**
 
-- **`DTHREAD_RWLOCK_AVAILABLE`**
+#### **`DTHREAD_RWLOCK_AVAILABLE`**
 
 This macro indicates the availability of read-write locks (RWLocks) within the DThreads library. If this macro is defined, it means that the platform supports RWLocks, and the corresponding APIs (`dthread_rwlock_init`, `dthread_rwlock_rdlock`, etc.) are available for use. On platforms where RWLocks are not supported, this macro is undefined, and the RWLock-related APIs will not be available.
 
-- **`DTHREAD_CREATION_FLAG_AVAILABLE`**
+#### **`DTHREAD_CREATION_FLAG_AVAILABLE`**
 
 This macro signifies that thread creation flags are available on the platform. These flags allow additional control over thread behavior at the time of creation, such as setting the thread to be created in a suspended state. If this macro is defined, the `DThreadAttr` structure includes a `dwCreationFlags` member for Windows or an equivalent in POSIX systems.
 
-- **`DTHREAD_BARRIER_AVAILABLE`**
+#### **`DTHREAD_BARRIER_AVAILABLE`**
 
 This macro indicates whether barrier synchronization primitives are supported on the platform. A barrier is a point where multiple threads must wait until all have reached the barrier before any can proceed. If this macro is defined, the barrier-related functions (`dthread_barrier_init`, `dthread_barrier_wait`, etc.) are available. If not defined, barrier synchronization is not supported on the platform, and these functions will not be present.
 
-- **`DTHREAD_SEMAPHORE_AVAILABLE`**
+#### **`DTHREAD_SEMAPHORE_AVAILABLE`**
 
 This macro indicates the availability of semaphores within the DThreads library. Semaphores are synchronization primitives used to control access to a common resource by multiple threads. If this macro is defined, semaphore-related functions (`dthread_semaphore_init`, `dthread_semaphore_wait`, etc.) are available for use. In the absence of this macro, semaphore support is not provided by the platform, and these functions will be excluded.
 
-- **`DTHREAD_MUTEX_TYPE_AVAILABLE`**
+#### **`DTHREAD_MUTEX_TYPE_AVAILABLE`**
 
 This macro is used to indicate whether the platform supports different types of mutexes. In POSIX systems, this corresponds to the availability of `pthread_mutexattr_settype`. The `DThreadMutexAttr` structure will include a `type` member to specify the mutex type, such as normal, recursive, or error-checking. If this macro is not defined, only the default mutex type is supported.
 
-- **`DTHREAD_MUTEX_ROBUST_AVAILABLE`**
+#### **`DTHREAD_MUTEX_ROBUST_AVAILABLE`**
 
 This macro indicates the availability of robust mutexes, which are designed to handle cases where a thread holding a mutex is terminated without releasing it. If defined, the `DThreadMutexAttr` structure will include a `robust` member, and functions like `dthread_mutex_init` will support robust mutex attributes. In the absence of this macro, robust mutexes are not supported.
 
-- **`DTHREAD_MUTEX_PROTOCOL_AVAILABLE`**
+#### **`DTHREAD_MUTEX_PROTOCOL_AVAILABLE`**
 
 This macro denotes the availability of mutex protocol attributes, which control the priority inversion handling mechanism. If defined, the `DThreadMutexAttr` structure includes a `protocol` member to specify the mutex protocol. This feature is primarily available on real-time operating systems and is not commonly supported on all platforms.
 
-- **`DTHREAD_MUTEX_PRIOCEILING_AVAILABLE`**
+#### **`DTHREAD_MUTEX_PRIOCEILING_AVAILABLE`**
 
 This macro indicates that the platform supports the priority ceiling attribute for mutexes. If defined, the `DThreadMutexAttr` structure will include a `prioceiling` member, allowing you to set the priority ceiling for mutexes to prevent priority inversion. If not defined, priority ceiling is not supported by the platform.
 
-- **`DTHREAD_DEBUG`**
+#### **`DTHREAD_DEBUG`**
 
 This macro is used to control the logging of debug information within the DThreads library. When defined, it enables the `dthread_debug` function or macro, which logs internal operations and state changes. This is useful for development and troubleshooting but should be disabled in production builds to avoid performance overhead.
 
