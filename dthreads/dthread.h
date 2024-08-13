@@ -17,6 +17,11 @@
 
 #define DTHREAD_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #if defined(_WIN32) || defined(_WIN64)
 
 #include "_headers/windows.h"
@@ -27,7 +32,7 @@
 
 #endif
 
-typedef void* (*DThreadRoutine)(void*);
+    typedef void* (*DThreadRoutine)(void*);
 
 #define dthread_define_routine(NAME) void* NAME(void* arg)
 
@@ -37,11 +42,11 @@ typedef void* (*DThreadRoutine)(void*);
 #define dthread_debug(X)
 #endif
 
-typedef struct
-{
-    DThreadRoutine func;
-    void* args;
-} DThreadConfig;
+    typedef struct
+    {
+        DThreadRoutine func;
+        void* args;
+    } DThreadConfig;
 
 #define dthread_config_init(FUNC, ARGS) \
     (DThreadConfig)                     \
@@ -50,61 +55,61 @@ typedef struct
         .args = (void*)(ARGS),          \
     }
 
-int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config);
+    int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config);
 
-int dthread_detach(DThread thread);
+    int dthread_detach(DThread thread);
 
-int dthread_join(DThread thread, void* code);
+    int dthread_join(DThread thread, void* code);
 
-int dthread_equal(DThread thread1, DThread thread2);
+    int dthread_equal(DThread thread1, DThread thread2);
 
-DThread dthread_self(void);
+    DThread dthread_self(void);
 
-unsigned long dthread_id(DThread thread);
+    unsigned long dthread_id(DThread thread);
 
-void dthread_exit(void* code);
+    void dthread_exit(void* code);
 
-int dthread_cancel(DThread thread);
+    int dthread_cancel(DThread thread);
 
-int dthread_mutex_init(DThreadMutex* mutex, DThreadMutexAttr* attr);
+    int dthread_mutex_init(DThreadMutex* mutex, DThreadMutexAttr* attr);
 
-int dthread_mutex_lock(DThreadMutex* mutex);
+    int dthread_mutex_lock(DThreadMutex* mutex);
 
-int dthread_mutex_trylock(DThreadMutex* mutex);
+    int dthread_mutex_trylock(DThreadMutex* mutex);
 
-int dthread_mutex_unlock(DThreadMutex* mutex);
+    int dthread_mutex_unlock(DThreadMutex* mutex);
 
-int dthread_mutex_destroy(DThreadMutex* mutex);
+    int dthread_mutex_destroy(DThreadMutex* mutex);
 
-int dthread_cond_init(DThreadCond* cond, DThreadCondAttr* attr);
+    int dthread_cond_init(DThreadCond* cond, DThreadCondAttr* attr);
 
-int dthread_cond_signal(DThreadCond* cond);
+    int dthread_cond_signal(DThreadCond* cond);
 
-int dthread_cond_broadcast(DThreadCond* cond);
+    int dthread_cond_broadcast(DThreadCond* cond);
 
-int dthread_cond_destroy(DThreadCond* cond);
+    int dthread_cond_destroy(DThreadCond* cond);
 
-int dthread_cond_wait(DThreadCond* cond, DThreadMutex* mutex);
+    int dthread_cond_wait(DThreadCond* cond, DThreadMutex* mutex);
 
 #ifdef DTHREAD_RWLOCK_AVAILABLE
 
-int dthread_rwlock_init(DThreadRWLock* rwlock);
+    int dthread_rwlock_init(DThreadRWLock* rwlock);
 
-int dthread_rwlock_rdlock(DThreadRWLock* rwlock);
+    int dthread_rwlock_rdlock(DThreadRWLock* rwlock);
 
-int dthread_rwlock_unlock(DThreadRWLock* rwlock);
+    int dthread_rwlock_unlock(DThreadRWLock* rwlock);
 
-int dthread_rwlock_wrlock(DThreadRWLock* rwlock);
+    int dthread_rwlock_wrlock(DThreadRWLock* rwlock);
 
-int dthread_rwlock_destroy(DThreadRWLock* rwlock);
+    int dthread_rwlock_destroy(DThreadRWLock* rwlock);
 
 #endif
 
 #ifdef DTHREAD_BARRIER_AVAILABLE
 
-void dthread_barrier_init(DThreadBarrier* barrier, int num_threads);
-void dthread_barrier_wait(DThreadBarrier* barrier);
-void dthread_barrier_destroy(DThreadBarrier* barrier);
+    void dthread_barrier_init(DThreadBarrier* barrier, int num_threads);
+    void dthread_barrier_wait(DThreadBarrier* barrier);
+    void dthread_barrier_destroy(DThreadBarrier* barrier);
 
 #endif
 
@@ -118,6 +123,10 @@ void dthread_barrier_destroy(DThreadBarrier* barrier);
 #include "_posix.c"
 
 #endif
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif // DTHREAD_H_
