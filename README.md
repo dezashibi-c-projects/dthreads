@@ -1,6 +1,6 @@
 # DThreads: Cross-Platform Threading Library in C
 
-👉 I developed this library as a re-imagined and re-implemented version of [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo), which served as the initial inspiration. After using `CThreads` at [a specific commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd), I found the need to adapt it to fit [my coding style](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and preferences, resulting in a simpler and more feature-rich version. While this library is based on the ideas from `CThreads`, it is a significant re-implementation with additional functionality and design choices.
+👉 I developed this library as a re-implemented version of [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo), which served as the initial inspiration. After using `CThreads` at [a specific commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd), I found the need to adapt it to fit [my coding style](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and preferences, resulting in a simpler and more feature-rich version. While this library is based on the ideas from `CThreads`, it is a significant re-implementation with additional functionality and design choices.
 
 In accordance with the original BSD 2-Clause License of `CThreads`, I acknowledge the work of [@ThePedroo](https://github.com/ThePedroo). This project includes substantial re-implementations, modifications and additions, and is distributed under the BSD 3-Clause License. The original CThreads license is included in this project, ensuring compliance with open-source licensing requirements.
 
@@ -16,11 +16,11 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 
 ### Key Design Choices
 
-1. **Cross-Platform Compatibility**: DThreads provides a unified API that works across different platforms, hiding the underlying implementation details.
-2. **Modularity**: I've not been a friend of everything all at one place, so I've decided to modularize the implementations for each platform to its corresponding header and source file.
-3. **Simplicity**: The API is designed to be easy to use, with clear and concise function signatures and configuration structures.
-4. **Performance**: DThreads aims to minimize overhead by using lightweight structures and efficient synchronization primitives.
-5. **Code Clarity**: The library encourages a clear and consistent coding style, with well-documented functions and macros to reduce the learning curve.
+- **Cross-Platform Compatibility**: DThreads provides a unified API that works across different platforms, hiding the underlying implementation details.
+- **Modularity**: I've not been a friend of everything all at one place, so I've decided to modularize the implementations for each platform to its corresponding header and source file.
+- **Simplicity**: The API is designed to be easy to use, with clear and concise function signatures and configuration structures.
+- **Performance**: DThreads aims to minimize overhead by using lightweight structures and efficient synchronization primitives.
+- **Code Clarity**: The library encourages a clear and consistent coding style, with well-documented functions and macros to reduce the learning curve.
 
 ## API Overview
 
@@ -115,7 +115,7 @@ This macro is used to control the logging of debug information within the DThrea
 
 ## Usage Guide
 
-**👉 NOTE: You can get the the latest for the latest `rc` or `beta` and/or get the latest stable version from releases. you can use the following commands:**
+**👉 NOTE: You can get the latest `rc`, `beta`, or stable version from releases. You can use the following commands:**
 
 - the latest release:
 
@@ -133,7 +133,7 @@ https://github.com/dezashibi-c/dthreads/releases/download/<version>/dthreads.zip
 
 **👉 NOTE: Make sure `#define DTHREAD_IMPL` is included in exactly one of your source files.**
 
-**👉 NOTE2: Make sure to check out [example folder](/examples/).**
+**👉 NOTE: Make sure to check out the [examples folder](/examples/) for usage examples.**
 
 To include DThreads in your project, add the `dthread.h` header file to your source files and link against the appropriate implementation for your platform (POSIX or Windows).
 
@@ -237,4 +237,4 @@ Please refer to [my coding style guide](https://github.com/dezashibi-c/.github/b
 
 This project is licensed under the BSD 3-Clause License.
 
-Parts of this project are derived from the CThreads library by [@ThePedroo](https://github.com/ThePedroo), which is licensed under the BSD 2-Clause License. The original license is included in the [LICENSE](/LICENSE) file to comply with the terms of the BSD 2-Clause License.
+Some parts of this project are derived from the CThreads library by [@ThePedroo](https://github.com/ThePedroo), which is licensed under the BSD 2-Clause License. To comply with the terms of the BSD 2-Clause License, a copy of the original CThreads license is included in this repository under the [LICENSE](/LICENSE) file.
