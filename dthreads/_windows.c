@@ -1,5 +1,5 @@
 // ***************************************************************************************
-//    Project: dthreads -> https://github.com/dezashibi-c-projects/dthreads
+//    Project: dthreads -> https://github.com/dezashibi-c/dthreads
 //    File: _windows.c
 //    Date: 2024-08-12
 //    Author: Navid Dezashibi
