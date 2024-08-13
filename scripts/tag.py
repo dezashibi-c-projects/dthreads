@@ -12,14 +12,11 @@ def zip_folder(folder_path, output_filename):
     with zipfile.ZipFile(output_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(folder_path):
             for file in files:
-                # Create the full file path
                 full_path = os.path.join(root, file)
-                # Create the archive name by joining the folder name with the relative path
                 arcname = os.path.join(folder_name, os.path.relpath(full_path, folder_path))
                 zipf.write(full_path, arcname)
 
 
-# Step 1: Extract the version and description from CHANGE_LOGS.md
 def extract_version_and_description():
     with open('CHANGE_LOGS.md', 'r') as file:
         description = []
@@ -28,14 +25,13 @@ def extract_version_and_description():
         for line in file:
             line = line.strip()
             if not version and line.startswith('## '):
-                version = line.split('## ')[1]  # Extract the version title
+                version = line.split('## ')[1]
             if line == "=======":
                 break
             description.append(line)
     
     return version, "\n".join(description)
 
-# Step 2: Create and push the Git tag
 def create_and_push_tag(version, description):
     try:
         subprocess.run(['git', 'tag', '-a', version, '-m', description], check=True)
@@ -45,7 +41,6 @@ def create_and_push_tag(version, description):
         print(f"Error during git tag/push: {e}")
         return False
 
-# Step 3: Create GitHub release if version contains "stable", "rc", or "beta"
 def create_github_release(version, description):
     if any(key in version for key in ["stable", "rc", "beta"]):
         try:
