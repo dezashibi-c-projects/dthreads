@@ -11,6 +11,10 @@
 //     please feel free to contact me at the email address provided above.
 // ***************************************************************************************
 // *  Description:
+// *  `dthreads` is a cross-platform threading library in C that abstracts the underlying
+// *  threading mechanisms of different operating systems. This header provides the API
+// *  definitions for thread management, synchronization primitives like mutexes and
+// *  condition variables, and other threading utilities.
 // ***************************************************************************************
 
 #ifndef DTHREAD_H_
@@ -32,22 +36,61 @@ extern "C"
 
 #endif
 
+    /**
+     * @typedef DThreadRoutine
+     * @brief Defines a function pointer type for thread routines.
+     *
+     * A thread routine is a function that accepts a single void* argument and returns a void*.
+     */
     typedef void* (*DThreadRoutine)(void*);
 
+/**
+ * @macro dthread_define_routine
+ * @brief Simplifies the definition of thread routines.
+ *
+ * This macro helps define a thread routine that is compatible with the DThreads library.
+ *
+ * @param NAME The name of the thread routine function.
+ */
 #define dthread_define_routine(NAME) void* NAME(void* arg)
 
 #ifdef DTHREAD_DEBUG
+/**
+ * @macro dthread_debug
+ * @brief Outputs debug information if DTHREAD_DEBUG is defined.
+ *
+ * When DTHREAD_DEBUG is defined, this macro prints the provided message to the console.
+ * Otherwise, it does nothing.
+ *
+ * @param X The message to print for debugging purposes.
+ */
 #define dthread_debug(X) puts(X)
 #else
 #define dthread_debug(X)
 #endif
 
+    /**
+     * @struct DThreadConfig
+     * @brief Configuration structure for creating threads.
+     *
+     * This structure holds the function pointer to the thread routine and its arguments.
+     */
     typedef struct
     {
-        DThreadRoutine func;
-        void* args;
+        DThreadRoutine func; /**< Pointer to the thread routine function. */
+        void* args;          /**< Arguments to be passed to the thread routine. */
     } DThreadConfig;
 
+/**
+ * @macro dthread_config_init
+ * @brief Initializes a DThreadConfig structure.
+ *
+ * This macro simplifies the initialization of a DThreadConfig structure by allowing you
+ * to specify the thread routine and its arguments.
+ *
+ * @param FUNC The thread routine function.
+ * @param ARGS The arguments to pass to the thread routine.
+ */
 #define dthread_config_init(FUNC, ARGS) \
     (DThreadConfig)                     \
     {                                   \
@@ -55,74 +98,324 @@ extern "C"
         .args = (void*)(ARGS),          \
     }
 
+    /**
+     * @brief Creates a new thread.
+     *
+     * This function creates a new thread using the specified configuration and attributes.
+     *
+     * @param thread A pointer to the DThread structure to be initialized.
+     * @param attr Optional thread attributes; can be NULL for default attributes.
+     * @param config A pointer to a DThreadConfig structure containing the thread routine and arguments.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config);
 
+    /**
+     * @brief Detaches a thread, allowing it to run independently.
+     *
+     * Once a thread is detached, it cannot be joined. It will automatically clean up its resources when it terminates.
+     *
+     * @param thread The thread to detach.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_detach(DThread thread);
 
+    /**
+     * @brief Waits for a thread to complete.
+     *
+     * This function blocks the calling thread until the specified thread terminates.
+     *
+     * @param thread The thread to wait for.
+     * @param code A pointer to the return code from the thread routine; can be NULL.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_join(DThread thread, void* code);
 
+    /**
+     * @brief Compares two threads for equality.
+     *
+     * This function checks whether two threads are equal (i.e., represent the same thread).
+     *
+     * @param thread1 The first thread to compare.
+     * @param thread2 The second thread to compare.
+     * @return Non-zero if the threads are equal, zero otherwise.
+     */
     int dthread_equal(DThread thread1, DThread thread2);
 
+    /**
+     * @brief Returns the calling thread.
+     *
+     * This function returns a DThread structure representing the current thread.
+     *
+     * @return A DThread structure representing the current thread.
+     */
     DThread dthread_self(void);
 
+    /**
+     * @brief Returns the ID of a thread.
+     *
+     * This function returns the unique identifier of the specified thread.
+     *
+     * @param thread The thread whose ID to retrieve.
+     * @return The thread's ID as an unsigned long.
+     */
     unsigned long dthread_id(DThread thread);
 
+    /**
+     * @brief Exits the calling thread.
+     *
+     * This function terminates the calling thread and optionally returns a value to the thread that joined it.
+     *
+     * @param code The return code to pass to the joining thread.
+     */
     void dthread_exit(void* code);
 
+    /**
+     * @brief Cancels a thread.
+     *
+     * This function sends a cancellation request to the specified thread.
+     *
+     * @param thread The thread to cancel.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_cancel(DThread thread);
 
+    /**
+     * @brief Initializes a mutex.
+     *
+     * This function initializes a mutex with optional attributes.
+     *
+     * @param mutex A pointer to the mutex to initialize.
+     * @param attr Optional mutex attributes; can be NULL for default attributes.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_mutex_init(DThreadMutex* mutex, DThreadMutexAttr* attr);
 
+    /**
+     * @brief Locks a mutex.
+     *
+     * This function locks the specified mutex, blocking the calling thread if necessary.
+     *
+     * @param mutex A pointer to the mutex to lock.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_mutex_lock(DThreadMutex* mutex);
 
+    /**
+     * @brief Attempts to lock a mutex without blocking.
+     *
+     * This function tries to lock the specified mutex. If the mutex is already locked, the function returns immediately.
+     *
+     * @param mutex A pointer to the mutex to try locking.
+     * @return 0 if the mutex was successfully locked, non-zero if it was already locked.
+     */
     int dthread_mutex_trylock(DThreadMutex* mutex);
 
+    /**
+     * @brief Unlocks a mutex.
+     *
+     * This function unlocks the specified mutex, allowing other threads to lock it.
+     *
+     * @param mutex A pointer to the mutex to unlock.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_mutex_unlock(DThreadMutex* mutex);
 
+    /**
+     * @brief Destroys a mutex.
+     *
+     * This function destroys the specified mutex, releasing any resources it holds.
+     *
+     * @param mutex A pointer to the mutex to destroy.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_mutex_destroy(DThreadMutex* mutex);
 
+    /**
+     * @brief Initializes a condition variable.
+     *
+     * This function initializes a condition variable with optional attributes.
+     *
+     * @param cond A pointer to the condition variable to initialize.
+     * @param attr Optional condition variable attributes; can be NULL for default attributes.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_cond_init(DThreadCond* cond, DThreadCondAttr* attr);
 
+    /**
+     * @brief Signals a condition variable, waking one waiting thread.
+     *
+     * This function unblocks one of the threads currently waiting on the specified condition variable.
+     *
+     * @param cond A pointer to the condition variable to signal.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_cond_signal(DThreadCond* cond);
 
+    /**
+     * @brief Broadcasts a condition variable, waking all waiting threads.
+     *
+     * This function unblocks all threads currently waiting on the specified condition variable.
+     *
+     * @param cond A pointer to the condition variable to broadcast.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_cond_broadcast(DThreadCond* cond);
 
+    /**
+     * @brief Destroys a condition variable.
+     *
+     * This function destroys the specified condition variable, releasing any resources it holds.
+     *
+     * @param cond A pointer to the condition variable to destroy.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_cond_destroy(DThreadCond* cond);
 
+    /**
+     * @brief Waits on a condition variable.
+     *
+     * This function atomically releases the specified mutex and blocks the calling thread until the condition variable is signaled.
+     *
+     * @param cond A pointer to the condition variable to wait on.
+     * @param mutex A pointer to the mutex associated with the condition variable.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_cond_wait(DThreadCond* cond, DThreadMutex* mutex);
 
 #ifdef DTHREAD_RWLOCK_AVAILABLE
 
+    /**
+     * @brief Initializes a read-write lock.
+     *
+     * This function initializes a read-write lock, allowing multiple threads to read or one thread to write at a time.
+     *
+     * @param rwlock A pointer to the read-write lock to initialize.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_rwlock_init(DThreadRWLock* rwlock);
 
+    /**
+     * @brief Acquires a read lock on a read-write lock.
+     *
+     * This function locks the read-write lock for reading, allowing multiple threads to acquire read locks simultaneously.
+     *
+     * @param rwlock A pointer to the read-write lock to lock.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_rwlock_rdlock(DThreadRWLock* rwlock);
 
+    /**
+     * @brief Unlocks a read-write lock.
+     *
+     * This function releases a previously acquired read or write lock on the read-write lock.
+     *
+     * @param rwlock A pointer to the read-write lock to unlock.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_rwlock_unlock(DThreadRWLock* rwlock);
 
+    /**
+     * @brief Acquires a write lock on a read-write lock.
+     *
+     * This function locks the read-write lock for writing, allowing only one thread to acquire the write lock at a time.
+     *
+     * @param rwlock A pointer to the read-write lock to lock.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_rwlock_wrlock(DThreadRWLock* rwlock);
 
+    /**
+     * @brief Destroys a read-write lock.
+     *
+     * This function destroys the specified read-write lock, releasing any resources it holds.
+     *
+     * @param rwlock A pointer to the read-write lock to destroy.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_rwlock_destroy(DThreadRWLock* rwlock);
 
 #endif
 
 #ifdef DTHREAD_BARRIER_AVAILABLE
 
+    /**
+     * @brief Initializes a barrier.
+     *
+     * This function initializes a barrier for a specified number of threads. All threads must reach the barrier before any can proceed.
+     *
+     * @param barrier A pointer to the barrier to initialize.
+     * @param num_threads The number of threads required to reach the barrier.
+     */
     void dthread_barrier_init(DThreadBarrier* barrier, int num_threads);
+
+    /**
+     * @brief Waits at a barrier.
+     *
+     * This function blocks the calling thread until the specified number of threads have reached the barrier.
+     *
+     * @param barrier A pointer to the barrier to wait on.
+     */
     void dthread_barrier_wait(DThreadBarrier* barrier);
+
+    /**
+     * @brief Destroys a barrier.
+     *
+     * This function destroys the specified barrier, releasing any resources it holds.
+     *
+     * @param barrier A pointer to the barrier to destroy.
+     */
     void dthread_barrier_destroy(DThreadBarrier* barrier);
 
 #endif
 
 #ifdef DTHREAD_SEMAPHORE_AVAILABLE
 
+    /**
+     * @brief Initializes a semaphore.
+     *
+     * This function initializes a semaphore with the specified initial value.
+     *
+     * @param semaphore A pointer to the semaphore to initialize.
+     * @param initial_value The initial value of the semaphore.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_semaphore_init(DThreadSemaphore* semaphore, unsigned int initial_value);
 
+    /**
+     * @brief Waits on a semaphore.
+     *
+     * This function decrements the semaphore value, blocking the calling thread if the value is zero until another thread increments it.
+     *
+     * @param semaphore A pointer to the semaphore to wait on.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_semaphore_wait(DThreadSemaphore* semaphore);
 
+    /**
+     * @brief Posts to a semaphore.
+     *
+     * This function increments the semaphore value, potentially unblocking a waiting thread.
+     *
+     * @param semaphore A pointer to the semaphore to post to.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_semaphore_post(DThreadSemaphore* semaphore);
 
+    /**
+     * @brief Destroys a semaphore.
+     *
+     * This function destroys the specified semaphore, releasing any resources it holds.
+     *
+     * @param semaphore A pointer to the semaphore to destroy.
+     * @return 0 on success, non-zero on failure.
+     */
     int dthread_semaphore_destroy(DThreadSemaphore* semaphore);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #ifdef DTHREAD_IMPL
@@ -135,10 +428,6 @@ extern "C"
 #include "_posix.c"
 
 #endif
-#endif
-
-#ifdef __cplusplus
-}
 #endif
 
 #endif // DTHREAD_H_

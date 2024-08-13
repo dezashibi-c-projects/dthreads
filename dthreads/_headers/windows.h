@@ -10,7 +10,8 @@
 //     the licensing of this work. If you have any questions or concerns,
 //     please feel free to contact me at the email address provided above.
 // ***************************************************************************************
-// *  Description:
+// *  Description: Windows header file for dthreads library, this is not to be used in your
+// *               library directly.
 // ***************************************************************************************
 
 #ifndef DTHREAD_WINDOWS_H_
