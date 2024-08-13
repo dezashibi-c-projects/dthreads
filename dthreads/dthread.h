@@ -17,7 +17,7 @@
 
 #define DTHREAD_H_
 
-#if defined(_WIN32) || (_WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 
 #include "_headers/windows.h"
 
@@ -101,7 +101,7 @@ int dthread_rwlock_destroy(DThreadRWLock* rwlock);
 #endif
 
 #ifdef DTHREAD_IMPL
-#if defined(_WIN32) || (_WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 
 #include "_windows.c"
 

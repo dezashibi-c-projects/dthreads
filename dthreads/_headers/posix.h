@@ -49,7 +49,7 @@
 #define DTHREAD_RWLOCK_AVAILABLE
 #define DTHREAD_COND_CLOCK_AVAILABLE
 
-#if (defined __linux__ || defined __FreeBSD__) && !defined __ANDROID__
+#if (defined(__linux__) || defined(__FreeBSD__)) && !defined __ANDROID__
 #define DTHREAD_MUTEX_ROBUST_AVAILABLE
 #endif
 
