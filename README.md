@@ -4,7 +4,7 @@
 
 DThreads is a cross-platform threading library designed for C programmers who need a consistent and simple API to manage threads, synchronization primitives, and other concurrency utilities across different operating systems. It abstracts the complexities of native threading APIs like POSIX threads and Windows threads, providing a unified interface that works seamlessly on both platforms.
 
-**👉 NOTE:** I got this idea by looking at a library called [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo). I have used it a couple of tiles when it was at [this commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd) and I thought I want to sort of hacking it and making a newer and simpler one based on [my coding style and tastes](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and also add more features to it. So I can say mention here that this is in fact a hacky and re-imagined re-implementation of `CThreads` library.
+**👉 NOTE:** I got the idea by looking at a library called [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo). I have used it a couple of times when it was at [this commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd) and I've needed to sort of hacking it and making a newer and simpler version of it based on [my coding style and tastes](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and also add more features to it. This is in fact a hacky and re-imagined and re-implementation of `CThreads` library.
 
 ## Design Philosophy
 
