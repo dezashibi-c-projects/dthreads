@@ -135,11 +135,11 @@ https://github.com/dezashibi-c/dthreads/releases/download/<version>/dthreads.zip
 
 **👉 NOTE: Make sure to check out the [examples folder](/examples/) for usage examples.**
 
-To include DThreads in your project, add the `dthread.h` header file to your source files and link against the appropriate implementation for your platform (POSIX or Windows).
+To include DThreads in your project, add the `dthreads/dthread.h` header file to your source files and link against the appropriate implementation for your platform (POSIX or Windows).
 
 ```c
 #define DTHREAD_IMPL
-#include "dthread.h"
+#include "dthreads/dthread.h"
 ```
 
 ### Creating a Thread
@@ -147,7 +147,7 @@ To include DThreads in your project, add the `dthread.h` header file to your sou
 To create a thread, define a thread routine and use `dthread_create` to start the thread:
 
 ```c
-#include "dthread.h"
+#include "dthreads/dthread.h"
 
 dthread_define_routine(my_thread_function) {
     // Thread code here
