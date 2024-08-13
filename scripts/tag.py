@@ -52,9 +52,11 @@ def create_github_release(version, description):
             if folder_to_zip != '':
                 zip_folder(folder_to_zip, f"{folder_to_zip}.zip")
 
-            release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description, '--latest']
+            release_command = ['gh', 'release', 'create', version, *release_files, '--title', version, '--notes', description]
             if "stable" not in version:
                 release_command.append('--prerelease')
+            else:
+                release_command.append('--latest')
             subprocess.run(release_command, check=True)
             return True
         except subprocess.CalledProcessError as e:

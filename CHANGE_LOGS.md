@@ -1,4 +1,4 @@
-## v0.8.0-beta
+## v0.8.1-beta
 
 **Release Date: 2024-08-13**
 
