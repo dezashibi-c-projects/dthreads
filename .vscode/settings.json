@@ -6,10 +6,13 @@
         "INHERITSCHED",
         "PRIOCEILING",
         "PSHARED",
-        "SCHEDPOLICY"
+        "SCHEDPOLICY",
+        "xsleep"
     ],
     "files.associations": {
         "dthread.h": "c",
-        "posix.h": "c"
+        "posix.h": "c",
+        "stdlib.h": "c",
+        "string.h": "c"
     }
 }
