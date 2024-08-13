@@ -2,7 +2,7 @@
 
 👉 I developed this library as a re-implemented version of [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo), which served as the initial inspiration. After using `CThreads` at [a specific commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd), I found the need to adapt it to fit [my coding style](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and preferences, resulting in a simpler and more feature-rich version. While this library is based on the ideas from `CThreads`, it is a significant re-implementation with additional functionality and design choices.
 
-In accordance with the original BSD 2-Clause License of `CThreads`, I acknowledge the work of [@ThePedroo](https://github.com/ThePedroo). This project includes substantial re-implementations, modifications and additions, and is distributed under the BSD 3-Clause License. The original CThreads license is included in this project, ensuring compliance with open-source licensing requirements.
+In accordance with the original BSD 2-Clause License of `CThreads`, I acknowledge the work of [@ThePedroo](https://github.com/ThePedroo). This project includes substantial re-implementations, modifications and additions, and is distributed under the BSD 3-Clause License. The original `CThreads` license is included in this project, ensuring compliance with open-source licensing requirements.
 
 ## Overview
 
