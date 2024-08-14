@@ -31,10 +31,11 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 ### Thread Management
 
 - **DThreadRoutine**: A function pointer type for thread routines. A thread routine is a function that accepts a single `void*` argument and returns a `void*`.
-- **dthread_define_routine(NAME)**: A macro to simplify the definition of thread routines. It ensures compatibility with the DThreads library.
+- **dthread_define_routine**: A macro to simplify the definition of thread routines. It ensures compatibility with the DThreads library.
 - **dthread_set_data**: A macro that sets thread data for given thread reference.
 - **dthread_set_func**: A macro that sets thread routine for given thread reference.
 - **dthread_get_result**: A macro that gets thread routine result after the thread join completes for given thread reference.
+- **dthread_get_result_as**: A macro that gets thread routine result after the thread join completes for given thread reference and casting it to given type (must be a pointer type).
 - **dthread_create**: Creates a new thread using the specified configuration and attributes.
 - **dthread_detach**: Detaches a thread, allowing it to run independently. Once detached, a thread cannot be joined.
 - **dthread_join**: Waits for a thread to complete, blocking the calling thread until the specified thread terminates.

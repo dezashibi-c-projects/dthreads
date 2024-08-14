@@ -64,9 +64,11 @@ int main(void)
             perror("Failed to join thread");
         }
 
-        globalSum += *(int*)dthread_get_result(&th[i]);
+        globalSum += *dthread_get_result_as(&th[i], int*);
+
         free(dthread_get_result(&th[i]));
     }
+
     printf("Global sum: %d\n", globalSum);
     return 0;
 }

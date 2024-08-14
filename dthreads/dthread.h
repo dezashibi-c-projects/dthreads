@@ -149,6 +149,16 @@ extern "C"
  */
 #define dthread_get_result(THREAD_PTR) ((THREAD_PTR)->_result)
 
+/**
+ * @macro dthread_get_result_as
+ * @brief gets thread routine result after the thread join completes for given thread reference
+ * and casting it to given type (must be a pointer type)
+ *
+ * @param THREAD_PTR The reference (pointer) to the thread.
+ * @param T The pointer type for casting the _result field.
+ */
+#define dthread_get_result_as(THREAD_PTR, T) ((T)((THREAD_PTR)->_result))
+
     /**
      * @brief Creates a new thread.
      *
