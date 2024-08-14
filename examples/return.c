@@ -58,12 +58,10 @@ int main(void)
         return 2;
     }
 
-    void* result = dthread_get_result(&thread);
+    printf("Main res: %p\n", dthread_get_result(&thread));
+    printf("Result: %d\n", *dthread_get_result_as(&thread, int*));
 
-    printf("Main res: %p\n", result);
-    printf("Result: %d\n", *(int*)(result));
-
-    free(result);
+    free(dthread_get_result(&thread));
 
     return 0;
 }
