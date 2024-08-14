@@ -244,31 +244,30 @@ You can add whether `#define DTHREAD_DEBUG` before including the header file and
 ```powershell
 >.\examples\basic.exe 12000
 
-value starts at 12000
+----- value started at 12000
 dthread_mutex_init
 dthread_create
 dthread_create
+dthread_mutex_lock
 dthread_create
+dthread_mutex_lock
+dthread_mutex_lock
 dthread_create
+----- value is now 12001
 dthread_join
 dthread_mutex_lock
-value is now 12001
 dthread_mutex_unlock
-dthread_mutex_lock
-value is now 12002
-dthread_mutex_unlock
-dthread_mutex_lock
-value is now 12003
-dthread_mutex_unlock
-dthread_mutex_lock
-value is now 12004
+----- value is now 12002
 dthread_mutex_unlock
 dthread_join
 dthread_join
+----- value is now 12003
+dthread_mutex_unlock
+----- value is now 12004
+dthread_mutex_unlock
 dthread_join
 dthread_mutex_destroy
-value finished with 12004
-
+----- value finished with 12004
 ```
 
 ## Contribution
