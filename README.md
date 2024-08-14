@@ -275,7 +275,7 @@ dthread_barrier_destroy(&barrier);
 
 ### Debugging Macro
 
-You can add whether `#define DTHREAD_DEBUG` before including the header file and `DTHREAD_IMPL` or passing `-DDTHREAD_DEBUG` to your compiler to activate debug messages.
+You can add whether `#define DTHREAD_DEBUG` before including the header file or passing `-DDTHREAD_DEBUG` to your compiler to activate debug messages.
 
 **👉 NOTE: Checkout [basic.c](/examples/basic.c) example to learn more.**
 
