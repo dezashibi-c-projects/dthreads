@@ -1,10 +1,10 @@
 # DThreads: Cross-Platform Threading Library in C
 
-👉 After using [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo) at [a specific commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd) in the repository (since there were no tags or version numbers), I found the need to adapt and re-implement it to fit [my coding style](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and preferences to have a simpler and more feature-rich version.
+After using [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo) at [a specific commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd) in the repository (since there were no tags or version numbers), I found the need to adapt and re-implement it to fit [my coding style](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and preferences to have a simpler and more feature-rich version.
 
 This library is based on the ideas from `CThreads` as the initial inspiration with a significant re-implementation with additional functionality and design choices.
 
-In accordance with the original BSD 2-Clause License of `CThreads`, I acknowledge the work of [@ThePedroo](https://github.com/ThePedroo). This project includes substantial re-implementations, modifications and additions, and is distributed under the BSD 3-Clause License. The original `CThreads` license is included in this project, ensuring compliance with open-source licensing requirements.
+**👉 NOTE:** In accordance with the original BSD 2-Clause License of `CThreads`, I acknowledge the work of [@ThePedroo](https://github.com/ThePedroo). This project includes substantial re-implementations, modifications and additions, and is distributed under the BSD 3-Clause License. The original `CThreads` license is included in this project, ensuring compliance with open-source licensing requirements.
 
 ## Overview
 
@@ -233,7 +233,7 @@ dthread_barrier_destroy(&barrier);
 
 ## Contribution
 
-Please refer to [my coding style guide](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) if you'd like to contribute.
+Please consider **discussion in the issue section** for adding features or changing behaviors beforehand and please refer to [my coding style guide](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) if you'd like to contribute.
 
 ## License
 
