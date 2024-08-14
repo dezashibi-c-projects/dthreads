@@ -24,7 +24,7 @@ dthread_define_routine(thread_func)
     return NULL;
 }
 
-int main()
+int main(void)
 {
     DThread threads[NUM_THREADS];
     DThreadConfig thread_configs[NUM_THREADS];

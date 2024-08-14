@@ -1,7 +1,8 @@
-## v0.8.2-beta
+## v0.8.3-beta
 
 **Release Date: 2024-08-13**
 
+- prepare makefile
 - add semaphore
 - add semaphore example
 - add barrier
