@@ -40,6 +40,7 @@ int main(void)
 {
     DThread threads[NUM_THREADS];
     DThreadConfig thread_configs[NUM_THREADS];
+    int thread_ids[NUM_THREADS];
 
     // Initialize barrier
     dthread_barrier_init(&barrier, NUM_THREADS);
@@ -47,7 +48,8 @@ int main(void)
     // Create threads
     for (int i = 0; i < NUM_THREADS; ++i)
     {
-        thread_configs[i] = dthread_config_init(thread_func, &i);
+        thread_ids[i] = i;
+        thread_configs[i] = dthread_config_init(thread_func, &thread_ids[i]);
         dthread_create(&threads[i], NULL, &thread_configs[i]);
     }
 
