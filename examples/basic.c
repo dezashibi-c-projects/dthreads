@@ -18,7 +18,6 @@
 #include "../dthreads/dthread.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 
 #define NUM_THREADS 4
 
