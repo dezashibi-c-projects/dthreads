@@ -40,15 +40,16 @@ void* routine(void* arg)
 int main(void)
 {
     DThread th[2];
-    DThreadConfig th_conf[2];
+
     int i;
 
     for (i = 0; i < 2; ++i)
     {
-        th_conf[i] = dthread_config_init(routine, malloc(sizeof(int)));
-        *(int*)th_conf[i].args = i * 5;
+        th[i] = dthread_new_config(routine, malloc(sizeof(int)));
+        *(int*)th[i]._data = i * 5;
+        dthread_set_data(&th[i], int*, i * 5);
 
-        if (dthread_create(&th[i], NULL, &th_conf[i]) != 0)
+        if (dthread_create(&th[i], NULL) != 0)
         {
             perror("Failed to create thread");
         }
@@ -58,13 +59,13 @@ int main(void)
 
     for (i = 0; i < 2; ++i)
     {
-        if (dthread_join(th[i], &th_conf[i]) != 0)
+        if (dthread_join(&th[i]) != 0)
         {
             perror("Failed to join thread");
         }
 
-        globalSum += *(int*)th_conf[i].result;
-        free(th_conf[i].result);
+        globalSum += *(int*)dthread_get_result(&th[i]);
+        free(dthread_get_result(&th[i]));
     }
     printf("Global sum: %d\n", globalSum);
     return 0;

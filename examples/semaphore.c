@@ -40,7 +40,7 @@ DThreadSemaphore sem;
 
 dthread_define_routine(thread_func)
 {
-    int* thread_num = (int*)arg;
+    int* thread_num = (int*)data;
 
     dthread_semaphore_wait(&sem);
 
@@ -66,7 +66,6 @@ dthread_define_routine(thread_func)
 int main(void)
 {
     DThread threads[NUM_THREADS];
-    DThreadConfig thread_configs[NUM_THREADS];
     int thread_ids[NUM_THREADS];
 
     // Initialize semaphore
@@ -80,9 +79,9 @@ int main(void)
     for (int i = 0; i < NUM_THREADS; ++i)
     {
         thread_ids[i] = i;
-        thread_configs[i] = dthread_config_init(thread_func, &thread_ids[i]);
+        threads[i] = dthread_new_config(thread_func, &thread_ids[i]);
 
-        if (dthread_create(&threads[i], NULL, &thread_configs[i]) != 0)
+        if (dthread_create(&threads[i], NULL) != 0)
         {
             fprintf(stderr, "Failed to create thread %d\n", i);
             return EXIT_FAILURE;
@@ -92,7 +91,7 @@ int main(void)
     // Wait for all threads to finish
     for (int i = 0; i < NUM_THREADS; ++i)
     {
-        dthread_join(threads[i], NULL);
+        dthread_join(&threads[i]);
     }
 
     // Cleanup semaphore

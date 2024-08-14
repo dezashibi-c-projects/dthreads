@@ -26,10 +26,7 @@
 #define DTHREAD_BARRIER_AVAILABLE
 #define DTHREAD_SEMAPHORE_AVAILABLE
 
-typedef struct DThread
-{
-    HANDLE handle;
-} DThread;
+typedef HANDLE _ThreadHandle;
 
 typedef struct DThreadAttr
 {

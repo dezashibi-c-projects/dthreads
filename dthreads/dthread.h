@@ -52,7 +52,7 @@ extern "C"
  *
  * @param NAME The name of the thread routine function.
  */
-#define dthread_define_routine(NAME) void* NAME(void* arg)
+#define dthread_define_routine(NAME) void* NAME(void* data)
 
 #ifdef DTHREAD_DEBUG
 /**
@@ -87,48 +87,78 @@ extern "C"
 #endif
 
     /**
-     * @struct DThreadConfig
+     * @struct DThread
      * @brief Configuration structure for creating threads.
      *
-     * This structure holds the function pointer to the thread routine and its arguments.
+     * This structure holds the function pointer to the thread routine and its data.
      * It also holds the void pointer to the result
      */
     typedef struct
     {
-        DThreadRoutine func;
-        void* args;
-        void* result;
-    } DThreadConfig;
+        DThreadRoutine _func;
+        void* _data;
+        void* _result;
+
+        _ThreadHandle handle;
+
+    } DThread;
 
 /**
- * @macro dthread_config_init
- * @brief Initializes a DThreadConfig structure.
+ * @macro dthread_new_config
+ * @brief Initializes a DThread structure.
  *
- * This macro simplifies the initialization of a DThreadConfig structure by allowing you
+ * This macro simplifies the initialization of a DThread structure by allowing you
  * to specify the thread routine and its arguments.
  *
  * @param FUNC The thread routine function.
- * @param ARGS The arguments to pass to the thread routine.
+ * @param DATA The data to pass to the thread routine.
  */
-#define dthread_config_init(FUNC, ARGS) \
-    (DThreadConfig)                     \
-    {                                   \
-        .func = FUNC,                   \
-        .args = (void*)(ARGS),          \
-        .result = NULL                  \
+#define dthread_new_config(FUNC, DATA) \
+    (DThread)                          \
+    {                                  \
+        ._func = FUNC,                 \
+        ._data = (void*)(DATA),        \
+        ._result = NULL                \
     }
+
+/**
+ * @macro dthread_set_data
+ * @brief sets thread data for given thread reference
+ *
+ * @param THREAD_PTR The reference (pointer) to the thread.
+ * @param T The type the conversion must be done (type of data); must be pointer.
+ * @param DATA The data to pass to the thread routine to be set.
+ */
+#define dthread_set_data(THREAD_PTR, T, DATA) \
+    *(T)(THREAD_PTR)->_data = DATA
+
+/**
+ * @macro dthread_set_func
+ * @brief sets thread routine for given thread reference
+ *
+ * @param THREAD_PTR The reference (pointer) to the thread.
+ * @param FUNC The routine pointer to be set.
+ */
+#define dthread_set_func(THREAD_PTR, FUNC) THREAD_PTR->_func = FUNC
+
+/**
+ * @macro dthread_get_result
+ * @brief gets thread routine result after the thread join completes for given thread reference
+ *
+ * @param THREAD_PTR The reference (pointer) to the thread.
+ */
+#define dthread_get_result(THREAD_PTR) ((THREAD_PTR)->_result)
 
     /**
      * @brief Creates a new thread.
      *
-     * This function creates a new thread using the specified configuration and attributes.
+     * This function creates a new thread using the internal thread configuration and given attributes.
      *
      * @param thread A pointer to the DThread structure to be initialized.
      * @param attr Optional thread attributes; can be NULL for default attributes.
-     * @param config A pointer to a DThreadConfig structure containing the thread routine and arguments.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config);
+    int dthread_create(DThread* thread, DThreadAttr* attr);
 
     /**
      * @brief Detaches a thread, allowing it to run independently.
@@ -138,7 +168,7 @@ extern "C"
      * @param thread The thread to detach.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_detach(DThread thread);
+    int dthread_detach(DThread* thread);
 
     /**
      * @brief Waits for a thread to complete.
@@ -146,13 +176,12 @@ extern "C"
      * This function blocks the calling thread until the specified thread terminates.
      *
      * @param thread The thread to wait for.
-     * @param config The thread config.
      * @return 0 on success, non-zero on failure.
      *
-     * NOTE: On Windows, the return code from the thread routine is already saved in the DThreadConfig
+     * NOTE: On Windows, the return code from the thread routine is already saved in the DThread's _result
      * passed to the dthread_create; might be NULL.
      */
-    int dthread_join(DThread thread, DThreadConfig* config);
+    int dthread_join(DThread* thread);
 
     /**
      * @brief Compares two threads for equality.
@@ -163,7 +192,8 @@ extern "C"
      * @param thread2 The second thread to compare.
      * @return Non-zero if the threads are equal, zero otherwise.
      */
-    int dthread_equal(DThread thread1, DThread thread2);
+    int
+    dthread_equal(DThread* thread1, DThread* thread2);
 
     /**
      * @brief Returns the calling thread.
@@ -182,7 +212,7 @@ extern "C"
      * @param thread The thread whose ID to retrieve.
      * @return The thread's ID as an unsigned long.
      */
-    unsigned long dthread_id(DThread thread);
+    unsigned long dthread_id(DThread* thread);
 
     /**
      * @brief Exits the calling thread.
@@ -201,7 +231,7 @@ extern "C"
      * @param thread The thread to cancel.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_cancel(DThread thread);
+    int dthread_cancel(DThread* thread);
 
     /**
      * @brief Initializes a mutex.

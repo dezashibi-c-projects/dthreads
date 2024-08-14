@@ -56,10 +56,7 @@
 
 #endif
 
-typedef struct DThread
-{
-    pthread_t handle;
-} DThread;
+typedef pthread_t _ThreadHandle;
 
 typedef struct DThreadAttr
 {

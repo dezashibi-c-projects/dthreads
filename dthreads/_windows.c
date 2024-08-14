@@ -23,40 +23,38 @@ typedef struct
 
 DWORD WINAPI _dthread_winapi_function_wrapper(void* data)
 {
-    DThreadConfig* config = (DThreadConfig*)data;
-    config->result = config->func(config->args);
+    DThread* thread = (DThread*)data;
+    thread->_result = thread->_func(thread->_data);
 
     return 0;
 }
 
-int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config)
+int dthread_create(DThread* thread, DThreadAttr* attr)
 {
     dthread_debug("dthread_create");
 
-    assert(config && "Config cannot be NULL in dthread_create");
+    assert(thread && "`thread` cannot be NULL in dthread_create");
 
     if (attr)
-        thread->handle = CreateThread(NULL, attr->stacksize ? attr->stacksize : 0, _dthread_winapi_function_wrapper, config, attr->dwCreationFlags ? (DWORD)attr->dwCreationFlags : 0, NULL);
+        thread->handle = CreateThread(NULL, attr->stacksize ? attr->stacksize : 0, _dthread_winapi_function_wrapper, thread, attr->dwCreationFlags ? (DWORD)attr->dwCreationFlags : 0, NULL);
     else
-        thread->handle = CreateThread(NULL, 0, _dthread_winapi_function_wrapper, config, 0, NULL);
+        thread->handle = CreateThread(NULL, 0, _dthread_winapi_function_wrapper, thread, 0, NULL);
 
     return thread->handle == NULL;
 }
 
-int dthread_detach(DThread thread)
+int dthread_detach(DThread* thread)
 {
     dthread_debug("dthread_detach");
 
-    return CloseHandle(thread.handle);
+    return CloseHandle(thread->handle);
 }
 
-int dthread_join(DThread thread, DThreadConfig* config)
+int dthread_join(DThread* thread)
 {
-    (void)config;
-
     dthread_debug("dthread_join");
 
-    DWORD wait_result = WaitForSingleObject(thread.handle, INFINITE);
+    DWORD wait_result = WaitForSingleObject(thread->handle, INFINITE);
     if (wait_result != WAIT_OBJECT_0)
     {
         dthread_debug_args("dthread_join: WaitForSingleObject failed, result: %lu", wait_result);
@@ -64,18 +62,18 @@ int dthread_join(DThread thread, DThreadConfig* config)
     }
 
     // 👉 NOTE by @dezashibi
-    // Remember that the result is already stored in config->result by the thread function
+    // Remember that the result is already stored in thread->_result by the thread function
     // You can access it after this function returns
 
-    CloseHandle(thread.handle);
+    CloseHandle(thread->handle);
     return 0;
 }
 
-int dthread_equal(DThread thread1, DThread thread2)
+int dthread_equal(DThread* thread1, DThread* thread2)
 {
     dthread_debug("dthread_equal");
 
-    return thread1.handle == thread2.handle;
+    return thread1->handle == thread2->handle;
 }
 
 DThread dthread_self(void)
@@ -89,11 +87,11 @@ DThread dthread_self(void)
     return thread;
 }
 
-unsigned long dthread_id(DThread thread)
+unsigned long dthread_id(DThread* thread)
 {
     dthread_debug("dthread_id");
 
-    return GetThreadId(thread.handle);
+    return GetThreadId(thread->handle);
 }
 
 void dthread_exit(void* code)
@@ -107,11 +105,11 @@ void dthread_exit(void* code)
 #endif
 }
 
-int dthread_cancel(DThread thread)
+int dthread_cancel(DThread* thread)
 {
     dthread_debug("dthread_cancel");
 
-    return TerminateThread(thread.handle, 0);
+    return TerminateThread(thread->handle, 0);
 }
 
 int dthread_mutex_init(DThreadMutex* mutex, DThreadMutexAttr* attr)

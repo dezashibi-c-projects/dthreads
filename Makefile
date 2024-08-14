@@ -39,6 +39,12 @@ BUILDCMD = $(CC) $(CFLAGS)
 # Default target (debug build)
 all: $(TARGETS)
 
+test: $(TARGETS)
+	@for target in $(TARGETS); do \
+		echo "Running $$target"; \
+		./$$target || exit 1; \
+	done
+
 $(SRCDIR)/%$(TARGET_EXT): $(SRCDIR)/%.c
 	$(BUILDCMD) $< -o $@
 

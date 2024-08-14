@@ -24,7 +24,7 @@
 
 dthread_define_routine(roll_dice)
 {
-    (void)arg;
+    (void)data;
 
     srand(time(NULL));
 
@@ -44,27 +44,26 @@ dthread_define_routine(roll_dice)
 
 int main(void)
 {
-    DThread thread;
-    DThreadConfig th_conf;
+    DThread thread = dthread_new_config(roll_dice, NULL);
 
-    th_conf = dthread_config_init(roll_dice, NULL);
-
-    if (dthread_create(&thread, NULL, &th_conf) != 0)
+    if (dthread_create(&thread, NULL) != 0)
     {
         fprintf(stderr, "Thread create failed\n");
         return 1;
     }
 
-    if (dthread_join(thread, &th_conf) != 0)
+    if (dthread_join(&thread) != 0)
     {
         fprintf(stderr, "Thread join failed\n");
         return 2;
     }
 
-    printf("Main res: %p\n", (void*)th_conf.result);
-    printf("Result: %d\n", *(int*)(th_conf.result));
+    void* result = dthread_get_result(&thread);
 
-    free(th_conf.result);
+    printf("Main res: %p\n", result);
+    printf("Result: %d\n", *(int*)(result));
+
+    free(result);
 
     return 0;
 }

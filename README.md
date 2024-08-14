@@ -32,6 +32,9 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 
 - **DThreadRoutine**: A function pointer type for thread routines. A thread routine is a function that accepts a single `void*` argument and returns a `void*`.
 - **dthread_define_routine(NAME)**: A macro to simplify the definition of thread routines. It ensures compatibility with the DThreads library.
+- **dthread_set_data**: A macro that sets thread data for given thread reference.
+- **dthread_set_func**: A macro that sets thread routine for given thread reference.
+- **dthread_get_result**: A macro that gets thread routine result after the thread join completes for given thread reference.
 - **dthread_create**: Creates a new thread using the specified configuration and attributes.
 - **dthread_detach**: Detaches a thread, allowing it to run independently. Once detached, a thread cannot be joined.
 - **dthread_join**: Waits for a thread to complete, blocking the calling thread until the specified thread terminates.
@@ -83,10 +86,7 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 
 - **`DThread`**  
   Represents a thread in the DThreads library.  
-  The `DThread` structure is used to manage and identify individual threads created and managed by the DThreads library. It abstracts the underlying platform-specific thread representation.
-
-- **`DThreadConfig`**
-  Represents a structure of pointer to thread routine, thread data and thread returned result. The `result` field of the config filled out by `dthread_create` on Windows through a wrapper function and `dthread_join` on POSIX systems automatically behind the scene.
+  The `DThread` structure is used to manage and identify individual threads created and managed by the DThreads library. It abstracts the underlying platform-specific thread representation. It also holds the reference to thread routine, thread routine data and thread result.
 
 - **`DThreadAttr`**  
   Attributes for thread creation.  
@@ -120,7 +120,7 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
   Represents a semaphore in the DThreads library.  
   The `DThreadSemaphore` structure is used to control access to a resource by multiple threads. Semaphores are used to limit the number of threads that can access a resource concurrently.
 
-### **Macro Documentation**
+### **Constant Macro Documentation**
 
 #### **`DTHREAD_RWLOCK_AVAILABLE`**
 
@@ -202,10 +202,10 @@ dthread_define_routine(my_thread_function) {
 }
 
 int main() {
-    DThread thread;
-    DThreadConfig config = dthread_config_init(my_thread_function, NULL);
-    dthread_create(&thread, NULL, &config);
-    dthread_join(thread, NULL);
+    DThread thread = dthread_new_config(my_thread_function, NULL);
+
+    dthread_create(&thread, NULL);
+    dthread_join(&thread);
     return 0;
 }
 ```
@@ -285,7 +285,7 @@ You can add whether `#define DTHREAD_DEBUG` before including the header file or 
 - Output for `basic.c`
 
 ```powershell
->.\examples\basic.exe 12000
+>.\examples\basic.exe
 
 ----- value started at 12000
 dthread_mutex_init

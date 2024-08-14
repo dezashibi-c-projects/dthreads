@@ -21,13 +21,13 @@
 
 #define NUM_THREADS 4
 
-long value = 0;
+long value = 12000;
 
 DThreadMutex mutex;
 
 dthread_define_routine(thread_func)
 {
-    (void)arg;
+    (void)data;
 
     dthread_mutex_lock(&mutex);
 
@@ -39,25 +39,10 @@ dthread_define_routine(thread_func)
     return NULL;
 }
 
-int main(int argc, char* argv[])
+int main(void)
 {
     DThread threads[NUM_THREADS];
-    DThreadConfig thread_configs[NUM_THREADS];
 
-    if (argc != 2)
-    {
-        fprintf(stderr, "An integer parameter is required\n");
-        return 1;
-    }
-
-    long arg = atoi(argv[1]);
-    if (arg < 0)
-    {
-        fprintf(stderr, "An integer >= 0 is required\n");
-        return 1;
-    }
-
-    value = arg;
     dthread_debug_args("----- value started at %lu", value);
 
     // Initialize mutex
@@ -66,9 +51,9 @@ int main(int argc, char* argv[])
     // Create threads
     for (int i = 0; i < NUM_THREADS; ++i)
     {
-        thread_configs[i] = dthread_config_init(thread_func, NULL);
+        threads[i] = dthread_new_config(thread_func, NULL);
 
-        if (dthread_create(&threads[i], NULL, &thread_configs[i]) != 0)
+        if (dthread_create(&threads[i], NULL) != 0)
         {
             fprintf(stderr, "Failed to create thread %d\n", i);
             return EXIT_FAILURE;
@@ -78,7 +63,7 @@ int main(int argc, char* argv[])
     // Wait for all threads to finish
     for (int i = 0; i < NUM_THREADS; ++i)
     {
-        dthread_join(threads[i], NULL);
+        dthread_join(&threads[i]);
     }
 
     // Cleanup mutex

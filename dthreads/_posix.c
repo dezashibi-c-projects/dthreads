@@ -16,11 +16,11 @@
 #include "_headers/common.h"
 #include "dthread.h"
 
-int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config)
+int dthread_create(DThread* thread, DThreadAttr* attr)
 {
     dthread_debug("dthread_create");
 
-    assert(config && "Config cannot be NULL in dthread_create");
+    assert(thread && "`thread` cannot be NULL in dthread_create");
 
     pthread_attr_t p_attr;
 
@@ -55,33 +55,30 @@ int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config)
             pthread_attr_setstacksize(&p_attr, attr->stacksize);
     }
 
-    return pthread_create(&thread->handle, attr ? &p_attr : NULL, config->func, config->args);
+    return pthread_create(&thread->handle, attr ? &p_attr : NULL, thread->_func, thread->_data);
 }
 
-int dthread_detach(DThread thread)
+int dthread_detach(DThread* thread)
 {
     dthread_debug("dthread_detach");
 
-    return pthread_detach(thread.handle);
+    return pthread_detach(thread->handle);
 }
 
-int dthread_join(DThread thread, DThreadConfig* config)
+int dthread_join(DThread* thread)
 {
     dthread_debug("dthread_join");
 
-    void* code = NULL;
+    void* code = (void**)&thread->_result;
 
-    if (config)
-        code = (void**)&config->result;
-
-    return pthread_join(thread.handle, code);
+    return pthread_join(thread->handle, code);
 }
 
-int dthread_equal(DThread thread1, DThread thread2)
+int dthread_equal(DThread* thread1, DThread* thread2)
 {
     dthread_debug("dthread_equal");
 
-    return pthread_equal(thread1.handle, thread2.handle);
+    return pthread_equal(thread1->handle, thread2->handle);
 }
 
 DThread dthread_self(void)
@@ -95,11 +92,11 @@ DThread dthread_self(void)
     return thread;
 }
 
-unsigned long dthread_id(DThread thread)
+unsigned long dthread_id(DThread* thread)
 {
     dthread_debug("dthread_id");
 
-    return (unsigned long)thread.handle;
+    return (unsigned long)thread->handle;
 }
 
 void dthread_exit(void* code)
@@ -109,11 +106,11 @@ void dthread_exit(void* code)
     pthread_exit(code);
 }
 
-int dthread_cancel(DThread thread)
+int dthread_cancel(DThread* thread)
 {
     dthread_debug("dthread_cancel");
 
-    return pthread_cancel(thread.handle);
+    return pthread_cancel(thread->handle);
 }
 
 int dthread_mutex_init(DThreadMutex* mutex, DThreadMutexAttr* attr)
