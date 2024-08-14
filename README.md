@@ -82,7 +82,7 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 
 ### Types Documentation
 
-**👉 NOTE:** Types are defined based on the operating system in the library's [dthread.h](/dthreads/dthread.h) [windows.h](/dthreads/_headers/windows.h) and [posix.h](/dthreads/_headers/posix.h) accordingly. You can find the overall definition and purpose of each type below.
+**👉 NOTE:** Types are defined in [dthread.h](/dthreads/dthread.h) and in the library's [windows.h](/dthreads/_headers/windows.h) and [posix.h](/dthreads/_headers/posix.h) based on the operating system accordingly. You can find the overall definition and purpose of each type below.
 
 - **`DThread`**  
   Represents a thread in the DThreads library.  
