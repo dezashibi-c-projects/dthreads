@@ -16,12 +16,17 @@
 #include "_headers/common.h"
 #include "dthread.h"
 
+typedef struct
+{
+    void* result;
+} DThreadResult;
+
 DWORD WINAPI _dthread_winapi_function_wrapper(void* data)
 {
-    DThreadConfig* config = data;
-    config->func(config->args);
+    DThreadConfig* config = (DThreadConfig*)data;
+    config->result = config->func(config->args);
 
-    return TRUE;
+    return 0;
 }
 
 int dthread_create(DThread* thread, DThreadAttr* attr, DThreadConfig* config)
@@ -45,14 +50,25 @@ int dthread_detach(DThread thread)
     return CloseHandle(thread.handle);
 }
 
-int dthread_join(DThread thread, void* code)
+int dthread_join(DThread thread, DThreadConfig* config)
 {
+    (void)config;
+
     dthread_debug("dthread_join");
 
-    if (WaitForSingleObject(thread.handle, INFINITE) == WAIT_FAILED)
-        return 0;
+    DWORD wait_result = WaitForSingleObject(thread.handle, INFINITE);
+    if (wait_result != WAIT_OBJECT_0)
+    {
+        dthread_debug_args("dthread_join: WaitForSingleObject failed, result: %lu", wait_result);
+        return 1;
+    }
 
-    return GetExitCodeThread(thread.handle, (LPDWORD)&code) == 0;
+    // 👉 NOTE by @dezashibi
+    // Remember that the result is already stored in config->result by the thread function
+    // You can access it after this function returns
+
+    CloseHandle(thread.handle);
+    return 0;
 }
 
 int dthread_equal(DThread thread1, DThread thread2)

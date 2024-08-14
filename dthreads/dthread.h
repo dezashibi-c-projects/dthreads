@@ -65,8 +65,20 @@ extern "C"
  * @param X The message to print for debugging purposes.
  */
 #define dthread_debug(X) puts(X)
+
+/**
+ * @macro dthread_debug_args
+ * @brief Outputs debug information with passed arguments if DTHREAD_DEBUG is defined.
+ *
+ * When DTHREAD_DEBUG is defined, this macro prints the provided message with passed args
+ * to the console Otherwise, it does nothing.
+ *
+ * @param X The message to print for debugging purposes.
+ */
+#define dthread_debug_args(X, ...) printf(X "\n", __VA_ARGS__)
 #else
 #define dthread_debug(X)
+#define dthread_debug_args(X, ...)
 #endif
 
     /**
@@ -74,11 +86,13 @@ extern "C"
      * @brief Configuration structure for creating threads.
      *
      * This structure holds the function pointer to the thread routine and its arguments.
+     * It also holds the void pointer to the result
      */
     typedef struct
     {
-        DThreadRoutine func; /**< Pointer to the thread routine function. */
-        void* args;          /**< Arguments to be passed to the thread routine. */
+        DThreadRoutine func;
+        void* args;
+        void* result;
     } DThreadConfig;
 
 /**
@@ -96,6 +110,7 @@ extern "C"
     {                                   \
         .func = FUNC,                   \
         .args = (void*)(ARGS),          \
+        .result = NULL                  \
     }
 
     /**
@@ -126,10 +141,13 @@ extern "C"
      * This function blocks the calling thread until the specified thread terminates.
      *
      * @param thread The thread to wait for.
-     * @param code A pointer to the return code from the thread routine; can be NULL.
+     * @param config The thread config.
      * @return 0 on success, non-zero on failure.
+     *
+     * NOTE: On Windows, the return code from the thread routine is already saved in the DThreadConfig
+     * passed to the dthread_create; might be NULL.
      */
-    int dthread_join(DThread thread, void* code);
+    int dthread_join(DThread thread, DThreadConfig* config);
 
     /**
      * @brief Compares two threads for equality.

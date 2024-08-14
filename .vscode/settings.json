@@ -13,6 +13,7 @@
         "dthread.h": "c",
         "posix.h": "c",
         "stdlib.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "common.h": "c"
     }
 }

@@ -1,6 +1,6 @@
 # DThreads: Cross-Platform Threading Library in C
 
-After using [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo) at [a specific commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd) in the repository (since there were no tags or version numbers), I found the need to adapt and re-implement it to fit [my coding style](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and preferences to have a simpler and more feature-rich version.
+After using [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo) at [a specific commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd) in the repository (since there were no tags or version numbers), I found the need to adapt and re-implement it to fit [my coding style](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and preferences to have a simpler, more compatible with Windows API (the result from thread had bug) and more feature-rich version.
 
 This library is based on the ideas from `CThreads` as the initial inspiration with a significant re-implementation with additional functionality and design choices.
 
@@ -79,11 +79,14 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 
 ### Types Documentation
 
-**👉 NOTE:** Types are defined based on the operating system in the library's [windows.h](/dthreads/_headers/windows.h) and [posix.h](/dthreads/_headers/posix.h) accordingly. You can find the overall definition and purpose of each type below.
+**👉 NOTE:** Types are defined based on the operating system in the library's [dthread.h](/dthreads/dthread.h) [windows.h](/dthreads/_headers/windows.h) and [posix.h](/dthreads/_headers/posix.h) accordingly. You can find the overall definition and purpose of each type below.
 
 - **`DThread`**  
   Represents a thread in the DThreads library.  
   The `DThread` structure is used to manage and identify individual threads created and managed by the DThreads library. It abstracts the underlying platform-specific thread representation.
+
+- **`DThreadConfig`**
+  Represents a structure of pointer to thread routine, thread data and thread returned result. The `result` field of the config filled out by `dthread_create` on Windows through a wrapper function and `dthread_join` on POSIX systems automatically behind the scene.
 
 - **`DThreadAttr`**  
   Attributes for thread creation.  
@@ -153,7 +156,7 @@ This macro indicates that the platform supports the priority ceiling attribute f
 
 #### **`DTHREAD_DEBUG`**
 
-This macro is used to control the logging of debug information within the DThreads library. When defined, it enables the `dthread_debug` function or macro, which logs internal operations and state changes. This is useful for development and troubleshooting but should be disabled in production builds to avoid performance overhead.
+This macro is used to control the logging of debug information within the DThreads library. When defined, it enables the `dthread_debug` and `dthread_debug_args` function macros, which logs internal operations and state changes. This is useful for development and troubleshooting but should be disabled in production builds to avoid performance overhead.
 
 ## Usage Guide
 

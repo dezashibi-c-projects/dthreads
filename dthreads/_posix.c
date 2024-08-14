@@ -65,11 +65,16 @@ int dthread_detach(DThread thread)
     return pthread_detach(thread.handle);
 }
 
-int dthread_join(DThread thread, void* code)
+int dthread_join(DThread thread, DThreadConfig* config)
 {
     dthread_debug("dthread_join");
 
-    return pthread_join(thread.handle, code ? &code : NULL);
+    void* code = NULL;
+
+    if (config)
+        code = (void**)&config->result;
+
+    return pthread_join(thread.handle, code);
 }
 
 int dthread_equal(DThread thread1, DThread thread2)

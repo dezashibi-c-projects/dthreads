@@ -1,7 +1,10 @@
-## v0.8.3-beta
+## v0.9.0-beta
 
-**Release Date: 2024-08-13**
+**Updated on 2024-08-13**
 
+Release Date: 2024-08-13
+
+- fixed the bug with handling returned results from thread on windows
 - prepare makefile
 - add semaphore
 - add semaphore example
