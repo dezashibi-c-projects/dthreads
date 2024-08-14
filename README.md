@@ -182,6 +182,8 @@ https://github.com/dezashibi-c/dthreads/releases/download/<version>/dthreads.zip
 
 **👉 NOTE: Running `make` on the root of the cloned repo builds all the [examples folder](/examples/).**
 
+**👉 NOTE: You can run all the tests all at once by running `make test`.**
+
 To include DThreads in your project, add the `dthreads/dthread.h` header file to your source files and link against the appropriate implementation for your platform (POSIX or Windows).
 
 ```c
@@ -281,8 +283,6 @@ dthread_barrier_destroy(&barrier);
 You can add whether `#define DTHREAD_DEBUG` before including the header file or passing `-DDTHREAD_DEBUG` to your compiler to activate debug messages.
 
 **👉 NOTE: Checkout [basic.c](/examples/basic.c) example to learn more.**
-
-**👉 NOTE: You can run all the tests all at once by running `make test`.**
 
 - Output for `basic.c`
 
