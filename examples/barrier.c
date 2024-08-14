@@ -1,5 +1,3 @@
-#define _POSIX_C_SOURCE 200112L
-
 #define DTHREAD_IMPL
 #include "../dthreads/dthread.h"
 
