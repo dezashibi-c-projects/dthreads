@@ -318,6 +318,10 @@ final result: 12004
 
 Please consider **discussion in the issue section** for adding features or changing behaviors beforehand and please refer to [my coding style guide](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) if you'd like to contribute.
 
+## Attributions
+
+Thanks to [code-vault](https://code-vault.net) for providing various practical examples on their website so that I could test out my library properly.
+
 ## License
 
 This project is licensed under the BSD 3-Clause License.
