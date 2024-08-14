@@ -137,6 +137,8 @@ https://github.com/dezashibi-c/dthreads/releases/download/<version>/dthreads.zip
 
 **👉 NOTE: Make sure to check out the [examples folder](/examples/) for usage examples.**
 
+**👉 NOTE: Running `make` on the root of the cloned repo builds all the [examples folder](/examples/) in the [examples folder](/examples/).**
+
 To include DThreads in your project, add the `dthreads/dthread.h` header file to your source files and link against the appropriate implementation for your platform (POSIX or Windows).
 
 ```c
