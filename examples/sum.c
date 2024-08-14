@@ -10,7 +10,7 @@
 //     the licensing of this work. If you have any questions or concerns,
 //     please feel free to contact me at the email address provided above.
 // ***************************************************************************************
-// *  Description: Refer to readme for documentation or dthreads.h
+// *  Description: Refer to readme for documentation or dthread.h
 // ***************************************************************************************
 
 #define DTHREAD_IMPL
