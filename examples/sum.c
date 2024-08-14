@@ -22,9 +22,9 @@
 
 int primes[10] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 
-void* routine(void* arg)
+dthread_define_routine(routine)
 {
-    int index = *(int*)arg;
+    int index = *(int*)data;
     int sum = 0;
 
     for (int j = 0; j < 5; ++j)
@@ -33,8 +33,8 @@ void* routine(void* arg)
     }
 
     printf("Local sum: %d\n", sum);
-    *(int*)arg = sum;
-    return arg;
+    *(int*)data = sum;
+    return data;
 }
 
 int main(void)

@@ -136,9 +136,7 @@ int dthread_mutex_trylock(DThreadMutex* mutex)
 {
     dthread_debug("dthread_mutex_trylock");
 
-    TryEnterCriticalSection(&mutex->handle);
-
-    return 0;
+    return TryEnterCriticalSection(&mutex->handle) != TRUE;
 }
 
 int dthread_mutex_unlock(DThreadMutex* mutex)

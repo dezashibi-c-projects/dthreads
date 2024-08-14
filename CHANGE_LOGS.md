@@ -1,9 +1,11 @@
-## v0.9.13-beta
+## v0.9.15-beta
 
 **Updated on 2024-08-13**
 
 Release Date: 2024-08-13
 
+- add example for trylock
+- fix windows bug for trylock
 - add macro for casting thread result
 - add Makefile target to run all the compiled examples
 - update API: remove DThreadConfig and bundle it's data to DThread tend to more simplified approach
