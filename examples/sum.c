@@ -4,12 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-unsigned long sum = 0;
+long sum = 0;
 
 dthread_define_routine(summation)
 {
-    unsigned long upper = *(unsigned long*)arg;
-    for (unsigned long i = 0; i <= upper; ++i)
+    long upper = *(long*)arg;
+    for (long i = 0; i <= upper; ++i)
     {
         ++sum;
     }
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    unsigned long arg = atoi(argv[1]);
+    long arg = atoi(argv[1]);
     if (arg < 0)
     {
         fprintf(stderr, "An integer >= 0 is required\n");

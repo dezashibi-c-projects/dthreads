@@ -55,7 +55,6 @@ int main(void)
     DThread threads[NUM_THREADS];
     DThreadConfig thread_configs[NUM_THREADS];
     int thread_ids[NUM_THREADS];
-    memset(thread_ids, 0, sizeof(int));
 
     // Initialize semaphore
     if (dthread_semaphore_init(&sem, 1) != 0)

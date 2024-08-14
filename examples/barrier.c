@@ -15,11 +15,11 @@ dthread_define_routine(thread_func)
 {
     intptr_t thread_num = (intptr_t)arg;
 
-    printf("Thread %ld reached the barrier.\n", thread_num);
+    printf("Thread %zu reached the barrier.\n", thread_num);
 
     dthread_barrier_wait(&barrier);
 
-    printf("Thread %ld passed the barrier.\n", thread_num);
+    printf("Thread %zu passed the barrier.\n", thread_num);
 
     return NULL;
 }
