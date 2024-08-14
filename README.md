@@ -282,6 +282,8 @@ You can add whether `#define DTHREAD_DEBUG` before including the header file or 
 
 **👉 NOTE: Checkout [basic.c](/examples/basic.c) example to learn more.**
 
+**👉 NOTE: You can run all the tests all at once by running `make test`.**
+
 - Output for `basic.c`
 
 ```powershell
