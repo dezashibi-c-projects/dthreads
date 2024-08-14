@@ -77,6 +77,46 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
   - **dthread_semaphore_post**: Posts to a semaphore, incrementing its value.
   - **dthread_semaphore_destroy**: Destroys the semaphore, releasing its resources.
 
+### Types Documentation
+
+**👉 NOTE:** Types are defined based on the operating system in the library's [windows.h](/dthreads/_headers/windows.h) and [posix.h](/dthreads/_headers/posix.h) accordingly. You can find the overall definition and purpose of each type below.
+
+- **`DThread`**  
+  Represents a thread in the DThreads library.  
+  The `DThread` structure is used to manage and identify individual threads created and managed by the DThreads library. It abstracts the underlying platform-specific thread representation.
+
+- **`DThreadAttr`**  
+  Attributes for thread creation.  
+  The `DThreadAttr` structure is used to specify attributes for threads when they are created. This includes options like stack size, thread priority, and other platform-specific attributes that influence the behavior of the thread.
+
+- **`DThreadMutex`**  
+  Represents a mutex (mutual exclusion) in the DThreads library.  
+  The `DThreadMutex` structure is used to protect shared resources from concurrent access by multiple threads. It provides locking mechanisms to ensure that only one thread can access a critical section at a time.
+
+- **`DThreadMutexAttr`**  
+  Attributes for mutex creation.  
+  The `DThreadMutexAttr` structure is used to specify attributes for mutexes when they are initialized. This includes options like mutex type (normal, recursive, or error-checking) and other platform-specific attributes.
+
+- **`DThreadCond`**  
+  Represents a condition variable in the DThreads library.  
+  The `DThreadCond` structure is used for thread synchronization by allowing threads to wait until a particular condition is met. Condition variables are used in conjunction with mutexes to avoid race conditions.
+
+- **`DThreadCondAttr`**  
+  Attributes for condition variable creation.  
+  The `DThreadCondAttr` structure is used to specify attributes for condition variables when they are initialized. These attributes may vary depending on the underlying platform.
+
+- **`DThreadRWLock`**  
+  Represents a read-write lock in the DThreads library.  
+  The `DThreadRWLock` structure is used to provide read-write synchronization. It allows multiple threads to read shared data simultaneously, while ensuring exclusive access for write operations.
+
+- **`DThreadBarrier`**  
+  Represents a barrier in the DThreads library.  
+  The `DThreadBarrier` structure is used to synchronize a group of threads at a specific point in the program. All threads must reach the barrier before any can proceed past it.
+
+- **`DThreadSemaphore`**  
+  Represents a semaphore in the DThreads library.  
+  The `DThreadSemaphore` structure is used to control access to a resource by multiple threads. Semaphores are used to limit the number of threads that can access a resource concurrently.
+
 ### **Macro Documentation**
 
 #### **`DTHREAD_RWLOCK_AVAILABLE`**
