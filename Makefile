@@ -41,7 +41,9 @@ all: $(TARGETS)
 
 test: $(TARGETS)
 	@for target in $(TARGETS); do \
-		echo "Running $$target"; \
+		echo "========================================="; \
+		echo " Running $$target"; \
+		echo "========================================="; \
 		./$$target || exit 1; \
 	done
 
