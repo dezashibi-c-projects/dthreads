@@ -46,7 +46,7 @@ int main(void)
     for (i = 0; i < 2; ++i)
     {
         th[i] = dthread_new_config(routine, malloc(sizeof(int)));
-        *(int*)th[i]._data = i * 5;
+
         dthread_set_data(&th[i], int*, i * 5);
 
         if (dthread_create(&th[i], NULL) != 0)
