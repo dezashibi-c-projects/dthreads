@@ -233,6 +233,44 @@ dthread_barrier_wait(&barrier);
 dthread_barrier_destroy(&barrier);
 ```
 
+### Debugging Macro
+
+You can add whether `#define DTHREAD_DEBUG` before including the header file and `DTHREAD_IMPL` or passing `-DDTHREAD_DEBUG` to your compiler to activate debug messages.
+
+**👉 NOTE: Checkout [basic.c](/examples/basic.c) example to learn more.**
+
+- Output for `basic.c`
+
+```powershell
+>.\examples\basic.exe 12000
+
+value starts at 12000
+dthread_mutex_init
+dthread_create
+dthread_create
+dthread_create
+dthread_create
+dthread_join
+dthread_mutex_lock
+value is now 12001
+dthread_mutex_unlock
+dthread_mutex_lock
+value is now 12002
+dthread_mutex_unlock
+dthread_mutex_lock
+value is now 12003
+dthread_mutex_unlock
+dthread_mutex_lock
+value is now 12004
+dthread_mutex_unlock
+dthread_join
+dthread_join
+dthread_join
+dthread_mutex_destroy
+value finished with 12004
+
+```
+
 ## Contribution
 
 Please consider **discussion in the issue section** for adding features or changing behaviors beforehand and please refer to [my coding style guide](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) if you'd like to contribute.
