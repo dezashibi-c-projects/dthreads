@@ -10,7 +10,7 @@
 //     the licensing of this work. If you have any questions or concerns,
 //     please feel free to contact me at the email address provided above.
 // ***************************************************************************************
-// *  Description:
+// *  Description: DO NOT LINK TO THIS FILE DIRECTLY REFER TO README
 // ***************************************************************************************
 
 #include "_headers/common.h"
