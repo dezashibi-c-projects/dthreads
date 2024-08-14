@@ -1,6 +1,6 @@
 // ***************************************************************************************
 //    Project: dthreads -> https://github.com/dezashibi-c/dthreads
-//    File: sum.c
+//    File: basic.c
 //    Date: 2024-08-14
 //    Author: Navid Dezashibi
 //    Contact: navid@dezashibi.com
@@ -14,27 +14,36 @@
 // ***************************************************************************************
 
 #define DTHREAD_IMPL
+#define DTHREAD_DEBUG
 #include "../dthreads/dthread.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-long sum = 0;
+#define NUM_THREADS 4
 
-dthread_define_routine(summation)
+long value = 0;
+
+DThreadMutex mutex;
+
+dthread_define_routine(thread_func)
 {
-    long upper = *(long*)arg;
-    for (long i = 0; i <= upper; ++i)
-    {
-        ++sum;
-    }
+    (void)arg;
+
+    dthread_mutex_lock(&mutex);
+
+    value += 1;
+    printf("value is now %lu\n", value);
+
+    dthread_mutex_unlock(&mutex);
 
     return NULL;
 }
 
 int main(int argc, char* argv[])
 {
-    DThread thread;
+    DThread threads[NUM_THREADS];
+    DThreadConfig thread_configs[NUM_THREADS];
 
     if (argc != 2)
     {
@@ -49,21 +58,34 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    DThreadConfig conf = dthread_config_init(summation, &arg);
+    value = arg;
+    printf("value starts at %lu\n", value);
 
-    if (dthread_create(&thread, NULL, &conf) != 0)
+    // Initialize mutex
+    dthread_mutex_init(&mutex, NULL);
+
+    // Create threads
+    for (int i = 0; i < NUM_THREADS; ++i)
     {
-        fprintf(stderr, "Creating thread failed\n");
-        return 1;
+        thread_configs[i] = dthread_config_init(thread_func, NULL);
+
+        if (dthread_create(&threads[i], NULL, &thread_configs[i]) != 0)
+        {
+            fprintf(stderr, "Failed to create thread %d\n", i);
+            return EXIT_FAILURE;
+        }
     }
 
-    if (dthread_join(thread, NULL) != 0)
+    // Wait for all threads to finish
+    for (int i = 0; i < NUM_THREADS; ++i)
     {
-        fprintf(stderr, "Joining thread failed\n");
-        return 1;
+        dthread_join(threads[i], NULL);
     }
 
-    printf("sum = %lu\n", sum);
+    // Cleanup mutex
+    dthread_mutex_destroy(&mutex);
+
+    printf("value finished with %lu\n", value);
 
     return 0;
 }
