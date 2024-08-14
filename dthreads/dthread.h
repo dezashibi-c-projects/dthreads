@@ -63,6 +63,8 @@ extern "C"
  * Otherwise, it does nothing.
  *
  * @param X The message to print for debugging purposes.
+ *
+ * NOTE: Adds "\\n" automatically
  */
 #define dthread_debug(X) puts(X)
 
@@ -74,6 +76,9 @@ extern "C"
  * to the console Otherwise, it does nothing.
  *
  * @param X The message to print for debugging purposes.
+ * @param ... The rest of arguments for passing to `printf`.
+ *
+ * NOTE: Adds "\\n" automatically
  */
 #define dthread_debug_args(X, ...) printf(X "\n", __VA_ARGS__)
 #else

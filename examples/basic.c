@@ -32,7 +32,7 @@ dthread_define_routine(thread_func)
     dthread_mutex_lock(&mutex);
 
     value += 1;
-    printf("----- value is now %lu\n", value);
+    dthread_debug_args("----- value is now %lu", value);
 
     dthread_mutex_unlock(&mutex);
 
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
     }
 
     value = arg;
-    printf("----- value started at %lu\n", value);
+    dthread_debug_args("----- value started at %lu", value);
 
     // Initialize mutex
     dthread_mutex_init(&mutex, NULL);
@@ -84,7 +84,9 @@ int main(int argc, char* argv[])
     // Cleanup mutex
     dthread_mutex_destroy(&mutex);
 
-    printf("----- value finished with %lu\n", value);
+    dthread_debug_args("----- value finished with %lu", value);
+
+    printf("final result: %lu\n", value);
 
     return 0;
 }

@@ -311,6 +311,7 @@ dthread_mutex_unlock
 dthread_join
 dthread_mutex_destroy
 ----- value finished with 12004
+final result: 12004
 ```
 
 ## Contribution
