@@ -56,7 +56,7 @@
 
 #endif
 
-typedef pthread_t _ThreadHandle;
+typedef pthread_t _DThreadHandle;
 
 typedef struct DThreadAttr
 {

@@ -81,15 +81,11 @@ int dthread_equal(DThread* thread1, DThread* thread2)
     return pthread_equal(thread1->handle, thread2->handle);
 }
 
-DThread dthread_self(void)
+_DThreadHandle dthread_self(void)
 {
     dthread_debug("dthread_self");
 
-    DThread thread;
-
-    thread.handle = pthread_self();
-
-    return thread;
+    return pthread_self();
 }
 
 unsigned long dthread_id(DThread* thread)

@@ -24,19 +24,9 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
-#define seed_rand()                                                      \
-    do                                                                   \
-    {                                                                    \
-        SYSTEMTIME st;                                                   \
-        GetSystemTime(&st);                                              \
-        unsigned int seed = st.wMilliseconds + (unsigned int)time(NULL); \
-        srand(seed);                                                     \
-        (void)rand();                                                    \
-    } while (0)
 
 #define xsleep(x) Sleep((x))
 #else
-#define seed_rand() srand(time(NULL))
 void xsleep(unsigned int milliseconds)
 {
     struct timespec ts;
@@ -53,20 +43,20 @@ dthread_define_routine(routine)
 {
     (void)data;
 
-    seed_rand();
+    dthread_rng_seed_maker();
 
     for (int i = 0; i < 4; ++i)
     {
         if (dthread_mutex_trylock(&stove_mutex[i]) == 0)
         {
-            int fuelNeeded = rand() % 30;
-            if (stove_fuel[i] - fuelNeeded < 0)
+            int fuel_needed = dthread_rng_random() % 30;
+            if (stove_fuel[i] - fuel_needed < 0)
             {
                 printf("Thread: No more fuel... going home\n");
             }
             else
             {
-                stove_fuel[i] -= fuelNeeded;
+                stove_fuel[i] -= fuel_needed;
                 xsleep(1000);
                 printf("Thread: Fuel left %d\n", stove_fuel[i]);
             }
@@ -89,6 +79,8 @@ dthread_define_routine(routine)
 
 int main(void)
 {
+    dthread_rng_init();
+
     DThread th[10];
 
     for (int i = 0; i < 4; ++i)
@@ -118,6 +110,8 @@ int main(void)
     {
         dthread_mutex_destroy(&stove_mutex[i]);
     }
+
+    dthread_rng_cleanup();
 
     return 0;
 }

@@ -81,6 +81,15 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
   - **dthread_semaphore_post**: Posts to a semaphore, incrementing its value.
   - **dthread_semaphore_destroy**: Destroys the semaphore, releasing its resources.
 
+### Thread Safe Random Number Generator
+
+- **dthread_rng_init**: Initializes the mutex for thread-safe random number generation.
+- **dthread_rng_cleanup**: Cleans up the mutex used for thread-safe random number generation.
+- **dthread_rng_random**: Generates a thread-safe random number.
+- **dthread_rng_seed_maker**: Seeds the random number generator with a unique seed.
+
+**👉 NOTE: Checkout [trylock.c](/examples/trylock.c) for learning more about using thread safe random number generator.**
+
 ### Types Documentation
 
 **👉 NOTE:** Types are defined in [dthread.h](/dthreads/dthread.h) and in the library's [windows.h](/dthreads/_headers/windows.h) and [posix.h](/dthreads/_headers/posix.h) based on the operating system accordingly. You can find the overall definition and purpose of each type below.

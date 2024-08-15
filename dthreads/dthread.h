@@ -99,7 +99,7 @@ extern "C"
         void* _data;
         void* _result;
 
-        _ThreadHandle handle;
+        _DThreadHandle handle;
 
     } DThread;
 
@@ -212,7 +212,7 @@ extern "C"
      *
      * @return A DThread structure representing the current thread.
      */
-    DThread dthread_self(void);
+    _DThreadHandle dthread_self(void);
 
     /**
      * @brief Returns the ID of a thread.
@@ -477,6 +477,8 @@ extern "C"
 
 #endif
 
+#include "_headers/random.h"
+
 #ifdef __cplusplus
 }
 #endif
@@ -491,6 +493,9 @@ extern "C"
 #include "_posix.c"
 
 #endif
+
+#include "_random.c"
+
 #endif
 
 #endif // DTHREAD_H_
