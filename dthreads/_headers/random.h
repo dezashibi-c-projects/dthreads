@@ -25,6 +25,7 @@
 #endif
 
 #include <stdlib.h>
+#include <time.h>
 
 /**
  * @brief Mutex for ensuring thread-safe access to the random number generator.

@@ -1,7 +1,7 @@
 // ***************************************************************************************
 //    Project: dthreads -> https://github.com/dezashibi-c/dthreads
-//    File: trylock.c
-//    Date: 2024-08-14
+//    File: semaphore2.c
+//    Date: 2024-08-15
 //    Author: Navid Dezashibi
 //    Contact: navid@dezashibi.com
 //    Website: https://www.dezashibi.com | https://github.com/dezashibi
@@ -17,9 +17,9 @@
 #define DTHREAD_IMPL
 #include "../dthreads/dthread.h"
 
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
@@ -35,43 +35,25 @@ void xsleep(unsigned int milliseconds)
 }
 #endif
 
-DThreadMutex stove_mutex[4];
-int stove_fuel[4] = {100, 100, 100, 100};
+#define THREAD_NUM 16
+
+DThreadSemaphore semaphore;
 
 dthread_define_routine(routine)
 {
-    (void)data;
-
     dthread_rng_seed_maker();
 
-    for (int i = 0; i < 4; ++i)
-    {
-        if (dthread_mutex_trylock(&stove_mutex[i]) == 0)
-        {
-            int fuel_needed = dthread_rng_random() % 30;
-            if (stove_fuel[i] - fuel_needed < 0)
-            {
-                printf("Thread: No more fuel... going home\n");
-            }
-            else
-            {
-                stove_fuel[i] -= fuel_needed;
-                xsleep(1000);
-                printf("Thread: Fuel left %d\n", stove_fuel[i]);
-            }
-            dthread_mutex_unlock(&stove_mutex[i]);
-            break;
-        }
-        else
-        {
-            if (i == 3)
-            {
-                printf("Thread: No stove available yet, waiting...\n");
-                xsleep(800);
-                i = -1;
-            }
-        }
-    }
+    printf("(%d) Waiting in the login queue\n", *(int*)data);
+
+    dthread_semaphore_wait(&semaphore);
+
+    printf("(%d) Logged in\n", *(int*)data);
+    xsleep((dthread_rng_random() % 5 + 1) * 1000);
+    printf("(%d) Logged out\n", *(int*)data);
+
+    dthread_semaphore_post(&semaphore);
+
+    free(data);
 
     return NULL;
 }
@@ -80,16 +62,15 @@ int main(void)
 {
     dthread_rng_init();
 
-    DThread th[10];
+    DThread th[THREAD_NUM];
 
-    for (int i = 0; i < 4; ++i)
-    {
-        dthread_mutex_init(&stove_mutex[i], NULL);
-    }
+    dthread_semaphore_init(&semaphore, 32);
 
-    for (int i = 0; i < 10; ++i)
+    int i;
+    for (i = 0; i < THREAD_NUM; i++)
     {
-        th[i] = dthread_new_config(routine, NULL);
+        th[i] = dthread_new_config(routine, malloc(sizeof(int)));
+        dthread_set_data(&th[i], int*, i);
 
         if (dthread_create(&th[i], NULL) != 0)
         {
@@ -97,7 +78,7 @@ int main(void)
         }
     }
 
-    for (int i = 0; i < 10; ++i)
+    for (i = 0; i < THREAD_NUM; i++)
     {
         if (dthread_join(&th[i]) != 0)
         {
@@ -105,11 +86,7 @@ int main(void)
         }
     }
 
-    for (int i = 0; i < 4; ++i)
-    {
-        dthread_mutex_destroy(&stove_mutex[i]);
-    }
-
+    dthread_semaphore_destroy(&semaphore);
     dthread_rng_cleanup();
 
     return 0;
