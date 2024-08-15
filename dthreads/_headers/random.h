@@ -70,6 +70,7 @@ void dthread_rng_cleanup(void);
 int dthread_rng_random(void);
 
 /**
+ * @macro dthread_rng_seed_maker
  * @brief Seeds the random number generator with a unique seed.
  *
  * This macro seeds the random number generator using a combination of the current time
