@@ -1,3 +1,12 @@
+# 👉👉 NOTE
+
+## This is not completed, use it at your own risk, I'm working on it, and am open to hear what you think
+
+Here are a couple of areas that I would like to get help or opinions:
+
+- [ ] Random number generator behavior improvement, especially on Windows refer to [here](https://github.com/dezashibi-c/dthreads/blob/0fd1c7339f26b0d6409b6ae8ac03d981cd795c4a/dthreads/_headers/random.h#L82).
+- [ ] Can I consider it feature completed? any suggestions?
+
 # DThreads: Cross-Platform Threading Library in C
 
 After using [CThreads](https://github.com/PerformanC/CThreads) by [@ThePedroo](https://github.com/ThePedroo) at [a specific commit](https://github.com/PerformanC/CThreads/commit/805673c9161f62e542ada76080d59516da5d17fd) in the repository (since there were no tags or version numbers), I found the need to adapt and re-implement it to fit [my coding style](https://github.com/dezashibi-c/.github/blob/main/coding_style.md) and preferences to have a simpler, more compatible with Windows API (the result from thread had bug) and more feature-rich version.
