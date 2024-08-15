@@ -22,11 +22,27 @@
 #include <stdlib.h>
 #include <time.h>
 
+#if defined(_WIN32) || defined(_WIN64)
+#include <windows.h>
+#define seed_rand()                                                      \
+    do                                                                   \
+    {                                                                    \
+        SYSTEMTIME st;                                                   \
+        GetSystemTime(&st);                                              \
+        unsigned int seed = st.wMilliseconds + (unsigned int)time(NULL); \
+        srand(seed);                                                     \
+        (void)rand();                                                    \
+    } while (0)
+
+#else
+#define seed_rand() srand(time(NULL))
+#endif
+
 dthread_define_routine(roll_dice)
 {
     (void)data;
 
-    srand(time(NULL));
+    seed_rand();
 
     int value = (rand() % 6) + 1;
     int* result = malloc(sizeof(int));

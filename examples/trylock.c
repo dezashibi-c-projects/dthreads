@@ -24,8 +24,19 @@
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
+#define seed_rand()                                                      \
+    do                                                                   \
+    {                                                                    \
+        SYSTEMTIME st;                                                   \
+        GetSystemTime(&st);                                              \
+        unsigned int seed = st.wMilliseconds + (unsigned int)time(NULL); \
+        srand(seed);                                                     \
+        (void)rand();                                                    \
+    } while (0)
+
 #define xsleep(x) Sleep((x))
 #else
+#define seed_rand() srand(time(NULL))
 void xsleep(unsigned int milliseconds)
 {
     struct timespec ts;
@@ -41,22 +52,23 @@ int stove_fuel[4] = {100, 100, 100, 100};
 dthread_define_routine(routine)
 {
     (void)data;
-    srand(time(NULL));
 
-    for (int i = 0; i < 4; i++)
+    seed_rand();
+
+    for (int i = 0; i < 4; ++i)
     {
         if (dthread_mutex_trylock(&stove_mutex[i]) == 0)
         {
-            int fuelNeeded = (rand() % 30);
+            int fuelNeeded = rand() % 30;
             if (stove_fuel[i] - fuelNeeded < 0)
             {
-                printf("No more fuel... going home\n");
+                printf("Thread: No more fuel... going home\n");
             }
             else
             {
                 stove_fuel[i] -= fuelNeeded;
                 xsleep(1000);
-                printf("Fuel left %d\n", stove_fuel[i]);
+                printf("Thread: Fuel left %d\n", stove_fuel[i]);
             }
             dthread_mutex_unlock(&stove_mutex[i]);
             break;
@@ -65,9 +77,9 @@ dthread_define_routine(routine)
         {
             if (i == 3)
             {
-                printf("No stove available yet, waiting...\n");
+                printf("Thread: No stove available yet, waiting...\n");
                 xsleep(800);
-                i = 0;
+                i = -1;
             }
         }
     }
@@ -79,12 +91,12 @@ int main(void)
 {
     DThread th[10];
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; ++i)
     {
         dthread_mutex_init(&stove_mutex[i], NULL);
     }
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; ++i)
     {
         th[i] = dthread_new_config(routine, NULL);
 
@@ -94,7 +106,7 @@ int main(void)
         }
     }
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; ++i)
     {
         if (dthread_join(&th[i]) != 0)
         {
@@ -102,7 +114,7 @@ int main(void)
         }
     }
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; ++i)
     {
         dthread_mutex_destroy(&stove_mutex[i]);
     }
