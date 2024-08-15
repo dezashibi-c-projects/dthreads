@@ -47,7 +47,7 @@ int dthread_detach(DThread* thread)
 {
     dthread_debug("dthread_detach");
 
-    return CloseHandle(thread->handle);
+    return !CloseHandle(thread->handle);
 }
 
 int dthread_join(DThread* thread)
@@ -65,8 +65,7 @@ int dthread_join(DThread* thread)
     // Remember that the result is already stored in thread->_result by the thread function
     // You can access it after this function returns
 
-    CloseHandle(thread->handle);
-    return 0;
+    return !CloseHandle(thread->handle);
 }
 
 int dthread_equal(DThread* thread1, DThread* thread2)
@@ -109,7 +108,7 @@ int dthread_cancel(DThread* thread)
 {
     dthread_debug("dthread_cancel");
 
-    return TerminateThread(thread->handle, 0);
+    return !TerminateThread(thread->handle, 0);
 }
 
 int dthread_mutex_init(DThreadMutex* mutex, DThreadMutexAttr* attr)
@@ -136,7 +135,7 @@ int dthread_mutex_trylock(DThreadMutex* mutex)
 {
     dthread_debug("dthread_mutex_trylock");
 
-    return TryEnterCriticalSection(&mutex->handle) != TRUE;
+    return !TryEnterCriticalSection(&mutex->handle);
 }
 
 int dthread_mutex_unlock(DThreadMutex* mutex)
@@ -199,7 +198,7 @@ int dthread_cond_wait(DThreadCond* cond, DThreadMutex* mutex)
 {
     dthread_debug("dthread_cond_wait");
 
-    return SleepConditionVariableCS(&cond->handle, &mutex->handle, INFINITE) == 0;
+    return !SleepConditionVariableCS(&cond->handle, &mutex->handle, INFINITE);
 }
 
 #ifdef DTHREAD_RWLOCK_AVAILABLE
