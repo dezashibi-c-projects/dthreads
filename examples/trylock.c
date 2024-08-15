@@ -6,7 +6,7 @@
 //    Contact: navid@dezashibi.com
 //    Website: https://www.dezashibi.com | https://github.com/dezashibi
 //    License:
-//     -> THIS EXAMPLE IS ORIGINALLY FROM https://code-vault.net
+//     -> THIS EXAMPLE IS BASED ON A SIMILAR EXAMPLE FROM https://code-vault.net
 //     Please refer to the LICENSE file, repository or website for more information about
 //     the licensing of this work. If you have any questions or concerns,
 //     please feel free to contact me at the email address provided above.
