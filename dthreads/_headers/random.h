@@ -17,6 +17,8 @@
 #ifndef DTHREAD_RANDOM_H_
 #define DTHREAD_RANDOM_H_
 
+#include "api.h"
+
 #if defined(_WIN32) || defined(_WIN64)
 #include <synchapi.h>
 #include <windows.h>
@@ -47,7 +49,7 @@ static pthread_mutex_t dthread_rng_mutex = PTHREAD_MUTEX_INITIALIZER;
  * is thread-safe. It must be called before any threads start generating random numbers.
  * On Windows, it initializes a CRITICAL_SECTION, and on POSIX systems, it initializes a pthread mutex.
  */
-void dthread_rng_init(void);
+DTHREAD_API void dthread_rng_init(void);
 
 /**
  * @brief Cleans up the mutex used for thread-safe random number generation.
@@ -56,7 +58,7 @@ void dthread_rng_init(void);
  * It should be called after all random number generation tasks are complete, typically
  * at the end of the program.
  */
-void dthread_rng_cleanup(void);
+DTHREAD_API void dthread_rng_cleanup(void);
 
 /**
  * @brief Generates a thread-safe random number.
@@ -67,7 +69,7 @@ void dthread_rng_cleanup(void);
  *
  * @return int A random number generated using the standard rand() function.
  */
-int dthread_rng_random(void);
+DTHREAD_API int dthread_rng_random(void);
 
 /**
  * @macro dthread_rng_seed_maker

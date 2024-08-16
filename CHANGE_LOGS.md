@@ -1,12 +1,14 @@
-## v0.9.50-rc
+## v0.9.50-stable
 
-**Updated on 2024-08-15**
+**Updated on 2024-08-16**
 
 Release Date: 2024-08-13
 
+- improve documentations
 - improve examples
 - improve macro usages
 - update API: remove DThreadConfig and bundle it's data to DThread tend to more simplified approach
+- add DTHREAD_API for supporting dynamic and static linking
 - add thread safe random number generator
 - add example for trylock
 - add macro for casting thread result

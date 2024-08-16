@@ -21,6 +21,10 @@
 
 #define DTHREAD_H_
 
+#include "_headers/api.h"
+
+#include <time.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -168,42 +172,41 @@ extern "C"
      * @param attr Optional thread attributes; can be NULL for default attributes.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_create(DThread* thread, DThreadAttr* attr);
+    DTHREAD_API int dthread_create(DThread* thread, DThreadAttr* attr);
 
     /**
      * @brief Detaches a thread, allowing it to run independently.
      *
      * Once a thread is detached, it cannot be joined. It will automatically clean up its resources when it terminates.
      *
-     * @param thread The thread to detach.
+     * @param thread The pointer to the thread to detach.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_detach(DThread* thread);
+    DTHREAD_API int dthread_detach(DThread* thread);
 
     /**
      * @brief Waits for a thread to complete.
      *
      * This function blocks the calling thread until the specified thread terminates.
      *
-     * @param thread The thread to wait for.
+     * @param thread The pointer to the thread to wait for.
      * @return 0 on success, non-zero on failure.
      *
      * NOTE: On Windows, the return code from the thread routine is already saved in the DThread's _result
      * passed to the dthread_create; might be NULL.
      */
-    int dthread_join(DThread* thread);
+    DTHREAD_API int dthread_join(DThread* thread);
 
     /**
      * @brief Compares two threads for equality.
      *
      * This function checks whether two threads are equal (i.e., represent the same thread).
      *
-     * @param thread1 The first thread to compare.
-     * @param thread2 The second thread to compare.
+     * @param thread1 The first pointer to the thread to compare.
+     * @param thread2 The second pointer to the thread to compare.
      * @return Non-zero if the threads are equal, zero otherwise.
      */
-    int
-    dthread_equal(DThread* thread1, DThread* thread2);
+    DTHREAD_API int dthread_equal(DThread* thread1, DThread* thread2);
 
     /**
      * @brief Returns the calling thread.
@@ -212,17 +215,17 @@ extern "C"
      *
      * @return A DThread structure representing the current thread.
      */
-    _DThreadHandle dthread_self(void);
+    DTHREAD_API _DThreadHandle dthread_self(void);
 
     /**
      * @brief Returns the ID of a thread.
      *
      * This function returns the unique identifier of the specified thread.
      *
-     * @param thread The thread whose ID to retrieve.
+     * @param thread The pointer to the thread whose ID to retrieve.
      * @return The thread's ID as an unsigned long.
      */
-    unsigned long dthread_id(DThread* thread);
+    DTHREAD_API unsigned long dthread_id(DThread* thread);
 
     /**
      * @brief Exits the calling thread.
@@ -231,17 +234,17 @@ extern "C"
      *
      * @param code The return code to pass to the joining thread.
      */
-    void dthread_exit(void* code);
+    DTHREAD_API void dthread_exit(void* code);
 
     /**
      * @brief Cancels a thread.
      *
      * This function sends a cancellation request to the specified thread.
      *
-     * @param thread The thread to cancel.
+     * @param thread The pointer to the thread to cancel.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_cancel(DThread* thread);
+    DTHREAD_API int dthread_cancel(DThread* thread);
 
     /**
      * @brief Initializes a mutex.
@@ -252,7 +255,7 @@ extern "C"
      * @param attr Optional mutex attributes; can be NULL for default attributes.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_mutex_init(DThreadMutex* mutex, DThreadMutexAttr* attr);
+    DTHREAD_API int dthread_mutex_init(DThreadMutex* mutex, DThreadMutexAttr* attr);
 
     /**
      * @brief Locks a mutex.
@@ -262,7 +265,7 @@ extern "C"
      * @param mutex A pointer to the mutex to lock.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_mutex_lock(DThreadMutex* mutex);
+    DTHREAD_API int dthread_mutex_lock(DThreadMutex* mutex);
 
     /**
      * @brief Attempts to lock a mutex without blocking.
@@ -272,7 +275,7 @@ extern "C"
      * @param mutex A pointer to the mutex to try locking.
      * @return 0 if the mutex was successfully locked, non-zero if it was already locked.
      */
-    int dthread_mutex_trylock(DThreadMutex* mutex);
+    DTHREAD_API int dthread_mutex_trylock(DThreadMutex* mutex);
 
     /**
      * @brief Unlocks a mutex.
@@ -282,7 +285,7 @@ extern "C"
      * @param mutex A pointer to the mutex to unlock.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_mutex_unlock(DThreadMutex* mutex);
+    DTHREAD_API int dthread_mutex_unlock(DThreadMutex* mutex);
 
     /**
      * @brief Destroys a mutex.
@@ -292,7 +295,7 @@ extern "C"
      * @param mutex A pointer to the mutex to destroy.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_mutex_destroy(DThreadMutex* mutex);
+    DTHREAD_API int dthread_mutex_destroy(DThreadMutex* mutex);
 
     /**
      * @brief Initializes a condition variable.
@@ -303,7 +306,7 @@ extern "C"
      * @param attr Optional condition variable attributes; can be NULL for default attributes.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_cond_init(DThreadCond* cond, DThreadCondAttr* attr);
+    DTHREAD_API int dthread_cond_init(DThreadCond* cond, DThreadCondAttr* attr);
 
     /**
      * @brief Signals a condition variable, waking one waiting thread.
@@ -313,7 +316,7 @@ extern "C"
      * @param cond A pointer to the condition variable to signal.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_cond_signal(DThreadCond* cond);
+    DTHREAD_API int dthread_cond_signal(DThreadCond* cond);
 
     /**
      * @brief Broadcasts a condition variable, waking all waiting threads.
@@ -323,7 +326,7 @@ extern "C"
      * @param cond A pointer to the condition variable to broadcast.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_cond_broadcast(DThreadCond* cond);
+    DTHREAD_API int dthread_cond_broadcast(DThreadCond* cond);
 
     /**
      * @brief Destroys a condition variable.
@@ -333,7 +336,7 @@ extern "C"
      * @param cond A pointer to the condition variable to destroy.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_cond_destroy(DThreadCond* cond);
+    DTHREAD_API int dthread_cond_destroy(DThreadCond* cond);
 
     /**
      * @brief Waits on a condition variable.
@@ -344,7 +347,7 @@ extern "C"
      * @param mutex A pointer to the mutex associated with the condition variable.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_cond_wait(DThreadCond* cond, DThreadMutex* mutex);
+    DTHREAD_API int dthread_cond_wait(DThreadCond* cond, DThreadMutex* mutex);
 
 #ifdef DTHREAD_RWLOCK_AVAILABLE
 
@@ -356,7 +359,7 @@ extern "C"
      * @param rwlock A pointer to the read-write lock to initialize.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_rwlock_init(DThreadRWLock* rwlock);
+    DTHREAD_API int dthread_rwlock_init(DThreadRWLock* rwlock);
 
     /**
      * @brief Acquires a read lock on a read-write lock.
@@ -366,7 +369,7 @@ extern "C"
      * @param rwlock A pointer to the read-write lock to lock.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_rwlock_rdlock(DThreadRWLock* rwlock);
+    DTHREAD_API int dthread_rwlock_rdlock(DThreadRWLock* rwlock);
 
     /**
      * @brief Unlocks a read-write lock.
@@ -376,7 +379,7 @@ extern "C"
      * @param rwlock A pointer to the read-write lock to unlock.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_rwlock_unlock(DThreadRWLock* rwlock);
+    DTHREAD_API int dthread_rwlock_unlock(DThreadRWLock* rwlock);
 
     /**
      * @brief Acquires a write lock on a read-write lock.
@@ -386,7 +389,7 @@ extern "C"
      * @param rwlock A pointer to the read-write lock to lock.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_rwlock_wrlock(DThreadRWLock* rwlock);
+    DTHREAD_API int dthread_rwlock_wrlock(DThreadRWLock* rwlock);
 
     /**
      * @brief Destroys a read-write lock.
@@ -396,7 +399,7 @@ extern "C"
      * @param rwlock A pointer to the read-write lock to destroy.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_rwlock_destroy(DThreadRWLock* rwlock);
+    DTHREAD_API int dthread_rwlock_destroy(DThreadRWLock* rwlock);
 
 #endif
 
@@ -410,7 +413,7 @@ extern "C"
      * @param barrier A pointer to the barrier to initialize.
      * @param num_threads The number of threads required to reach the barrier.
      */
-    void dthread_barrier_init(DThreadBarrier* barrier, int num_threads);
+    DTHREAD_API void dthread_barrier_init(DThreadBarrier* barrier, int num_threads);
 
     /**
      * @brief Waits at a barrier.
@@ -419,7 +422,7 @@ extern "C"
      *
      * @param barrier A pointer to the barrier to wait on.
      */
-    void dthread_barrier_wait(DThreadBarrier* barrier);
+    DTHREAD_API void dthread_barrier_wait(DThreadBarrier* barrier);
 
     /**
      * @brief Destroys a barrier.
@@ -428,7 +431,7 @@ extern "C"
      *
      * @param barrier A pointer to the barrier to destroy.
      */
-    void dthread_barrier_destroy(DThreadBarrier* barrier);
+    DTHREAD_API void dthread_barrier_destroy(DThreadBarrier* barrier);
 
 #endif
 
@@ -443,7 +446,7 @@ extern "C"
      * @param initial_value The initial value of the semaphore.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_semaphore_init(DThreadSemaphore* semaphore, unsigned int initial_value);
+    DTHREAD_API int dthread_semaphore_init(DThreadSemaphore* semaphore, unsigned int initial_value);
 
     /**
      * @brief Waits on a semaphore.
@@ -453,7 +456,7 @@ extern "C"
      * @param semaphore A pointer to the semaphore to wait on.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_semaphore_wait(DThreadSemaphore* semaphore);
+    DTHREAD_API int dthread_semaphore_wait(DThreadSemaphore* semaphore);
 
     /**
      * @brief Posts to a semaphore.
@@ -463,7 +466,7 @@ extern "C"
      * @param semaphore A pointer to the semaphore to post to.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_semaphore_post(DThreadSemaphore* semaphore);
+    DTHREAD_API int dthread_semaphore_post(DThreadSemaphore* semaphore);
 
     /**
      * @brief Destroys a semaphore.
@@ -473,12 +476,11 @@ extern "C"
      * @param semaphore A pointer to the semaphore to destroy.
      * @return 0 on success, non-zero on failure.
      */
-    int dthread_semaphore_destroy(DThreadSemaphore* semaphore);
+    DTHREAD_API int dthread_semaphore_destroy(DThreadSemaphore* semaphore);
 
 #endif
 
 #include "_headers/random.h"
-
 #ifdef __cplusplus
 }
 #endif

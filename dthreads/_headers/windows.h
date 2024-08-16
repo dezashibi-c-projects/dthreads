@@ -19,6 +19,7 @@
 #define DTHREAD_WINDOWS_H_
 
 #include <stddef.h>
+#include <synchapi.h>
 #include <windows.h>
 
 #define DTHREAD_RWLOCK_AVAILABLE

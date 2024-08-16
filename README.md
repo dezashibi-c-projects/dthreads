@@ -1,13 +1,13 @@
 # 👉👉 NOTE
 
-## This is not completed, use it at your own risk, I'm working on it, and am open to hear what you think
+## This is not fully completed, I'm working on it, and am open to hear what you think
 
 Here are a couple of areas that I would like to get help or opinions:
 
 - [ ] Random number generator behavior improvement, especially on Windows refer to [here](https://github.com/dezashibi-c/dthreads/blob/0fd1c7339f26b0d6409b6ae8ac03d981cd795c4a/dthreads/_headers/random.h#L82).
 - [ ] Can I consider it feature completed? any suggestions?
-- [ ] Comments and documentations are not yet fully reviewed
-- [ ] API declarations need review (for more cross-compiler support and also dynamic linking)
+- [x] Comments and documentations are not yet fully reviewed
+- [x] API declarations need review (for more cross-compiler support and also dynamic linking)
 
 # DThreads: Cross-Platform Threading Library in C
 
@@ -336,6 +336,40 @@ dthread_mutex_destroy
 ----- value finished with 12004
 final result: 12004
 ```
+
+### How to Use the `dthreads` Library in Shared Libraries
+
+The `dthreads` library is designed to be used both as a static library and as a dynamic/shared library.
+
+#### 1. **Understanding the `DTHREAD_API` Macro**
+
+The `dthreads` library uses a macro called `DTHREAD_API` to manage the export and import of symbols when building and using shared libraries. This macro adapts to different compilers and platforms to ensure that functions are correctly exported from the DLL (or shared object) and imported by any application or library that uses `dthreads`.
+
+- **`DTHREAD_API_EXPORT`**: Used when building the `dthreads` library to export functions and variables.
+- **`DTHREAD_API_IMPORT`**: Used when including `dthreads` in another project to import functions and variables from the shared library.
+- **`DTHREAD_DLL_EXPORTS`**: This macro should be defined when building the shared library to enable the export of symbols.
+
+#### 2. **Building the `dthreads` Library as a Shared Library**
+
+When compiling the `dthreads` library as a shared library, ensure that the `DTHREAD_DLL_EXPORTS` macro is defined. This will cause the `DTHREAD_API` macro to expand to `DTHREAD_API_EXPORT`, ensuring that all public functions and variables are exported from the DLL.
+
+Example command for building with MSVC:
+
+```sh
+cl /D DTHREAD_DLL_EXPORTS /LD dthread.c /o dthread.dll
+```
+
+Example command for building with GCC:
+
+```sh
+gcc -DDTHREAD_DLL_EXPORTS -shared -o libdthread.so dthread.c
+```
+
+#### 3. **Using the `dthreads` Library in Your Application**
+
+When using the `dthreads` library in your application or another shared library, you do **not** need to define `DTHREAD_DLL_EXPORTS`. This allows the `DTHREAD_API` macro to expand to `DTHREAD_API_IMPORT`, which ensures that the symbols are imported from the DLL.
+
+**👉 NOTE:** You only need this if you're creating another library based on `dthreads` and you need to choose to link it to your program statically or dynamically, otherwise just follow the normal way and add `DTHREAD_IMPL` in one of your `.c` source files and that does the work.
 
 ## Contribution
 
