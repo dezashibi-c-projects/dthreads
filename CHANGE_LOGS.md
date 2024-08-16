@@ -1,9 +1,10 @@
-## v0.9.50-stable
+## v0.9.52-stable
 
 **Updated on 2024-08-16**
 
 Release Date: 2024-08-13
 
+- improve integer type portability
 - improve documentations
 - improve examples
 - improve macro usages

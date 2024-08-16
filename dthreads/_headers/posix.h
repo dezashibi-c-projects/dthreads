@@ -18,6 +18,8 @@
 
 #define DTHREAD_POSIX_H_
 
+#include "api.h"
+
 #include <pthread.h>
 #include <semaphore.h>
 #include <stddef.h>

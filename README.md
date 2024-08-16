@@ -206,6 +206,8 @@ https://github.com/dezashibi-c/dthreads/releases/download/<version>/dthreads.zip
 
 **👉 NOTE: You can run all the tests all at once by running `make test`.**
 
+**👉 NOTE: Don't forget to add `-lpthread` when compiling on POSIX operating systems.**
+
 To include DThreads in your project, add the `dthreads/dthread.h` header file to your source files and link against the appropriate implementation for your platform (POSIX or Windows).
 
 ```c

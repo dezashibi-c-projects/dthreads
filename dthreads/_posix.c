@@ -88,11 +88,11 @@ _DThreadHandle dthread_self(void)
     return pthread_self();
 }
 
-unsigned long dthread_id(DThread* thread)
+dthread_ulong_t dthread_id(DThread* thread)
 {
     dthread_debug("dthread_id");
 
-    return (unsigned long)thread->handle;
+    return (dthread_ulong_t)thread->handle;
 }
 
 void dthread_exit(void* code)
@@ -291,7 +291,7 @@ void dthread_barrier_destroy(DThreadBarrier* barrier)
 
 #ifdef DTHREAD_SEMAPHORE_AVAILABLE
 
-int dthread_semaphore_init(DThreadSemaphore* semaphore, unsigned int initial_value)
+int dthread_semaphore_init(DThreadSemaphore* semaphore, dthread_uint_t initial_value)
 {
     dthread_debug("dthread_semaphore_init");
 

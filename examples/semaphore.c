@@ -25,7 +25,7 @@
 #include <windows.h>
 #define xsleep(x) Sleep((x))
 #else
-void xsleep(unsigned int milliseconds)
+void xsleep(dthread_uint_t milliseconds)
 {
     struct timespec ts;
     ts.tv_sec = milliseconds / 1000;

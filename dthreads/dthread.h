@@ -223,9 +223,9 @@ extern "C"
      * This function returns the unique identifier of the specified thread.
      *
      * @param thread The pointer to the thread whose ID to retrieve.
-     * @return The thread's ID as an unsigned long.
+     * @return The thread's ID as an dthread_ulong_t.
      */
-    DTHREAD_API unsigned long dthread_id(DThread* thread);
+    DTHREAD_API dthread_ulong_t dthread_id(DThread* thread);
 
     /**
      * @brief Exits the calling thread.
@@ -446,7 +446,7 @@ extern "C"
      * @param initial_value The initial value of the semaphore.
      * @return 0 on success, non-zero on failure.
      */
-    DTHREAD_API int dthread_semaphore_init(DThreadSemaphore* semaphore, unsigned int initial_value);
+    DTHREAD_API int dthread_semaphore_init(DThreadSemaphore* semaphore, dthread_uint_t initial_value);
 
     /**
      * @brief Waits on a semaphore.

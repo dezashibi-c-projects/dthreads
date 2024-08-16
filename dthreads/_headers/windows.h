@@ -18,6 +18,8 @@
 
 #define DTHREAD_WINDOWS_H_
 
+#include "api.h"
+
 #include <stddef.h>
 #include <synchapi.h>
 #include <windows.h>
