@@ -7,6 +7,7 @@ Here are a couple of areas that I would like to get help or opinions:
 - [ ] Random number generator behavior improvement, especially on Windows refer to [here](https://github.com/dezashibi-c/dthreads/blob/0fd1c7339f26b0d6409b6ae8ac03d981cd795c4a/dthreads/_headers/random.h#L82).
 - [ ] Can I consider it feature completed? any suggestions?
 - [ ] Comments and documentations are not yet fully reviewed
+- [ ] API declarations need review (for more cross-compiler support and also dynamic linking)
 
 # DThreads: Cross-Platform Threading Library in C
 
