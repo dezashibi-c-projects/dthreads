@@ -121,8 +121,10 @@ int dthread_mutex_init(DThreadMutex* mutex, DThreadMutexAttr* attr)
         if (attr->type)
             pthread_mutexattr_settype(&p_attr, attr->type);
 
+#if defined(_XOPEN_SOURCE) && (_XOPEN_SOURCE >= 700)
         if (attr->robust)
             pthread_mutexattr_setrobust(&p_attr, attr->robust);
+#endif
 
         if (attr->protocol)
             pthread_mutexattr_setprotocol(&p_attr, attr->protocol);
@@ -176,8 +178,10 @@ int dthread_cond_init(DThreadCond* cond, DThreadCondAttr* attr)
         if (attr->pshared)
             pthread_condattr_setpshared(&p_attr, attr->pshared);
 
+#if defined(_XOPEN_SOURCE) && (_XOPEN_SOURCE >= 700)
         if (attr->clock)
             pthread_condattr_setclock(&p_attr, attr->clock);
+#endif
     }
 
     return pthread_cond_init(&cond->handle, attr ? &p_attr : NULL);
