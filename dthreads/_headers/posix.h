@@ -83,7 +83,11 @@ typedef struct DThreadBarrier
 
 typedef struct DThreadSemaphore
 {
+#ifdef __APPLE__
+    sem_t* handle;
+#else
     sem_t handle;
+#endif
 } DThreadSemaphore;
 
 #endif // DTHREAD_POSIX_H_

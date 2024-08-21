@@ -321,18 +321,9 @@ int dthread_semaphore_init(DThreadSemaphore* semaphore, dthread_uint_t initial_v
 
 #ifdef __APPLE__
     sem_unlink("/dthread_semaphore_osx");
-    sem_t* handle_ptr = sem_open("/dthread_semaphore_osx", O_CREAT, 0644, initial_value);
+    semaphore->handle = sem_open("/dthread_semaphore_osx", O_CREAT, 0644, initial_value);
 
-    if (handle_ptr == SEM_FAILED)
-    {
-        perror("sem_open failed");
-        return -1;
-    }
-
-    semaphore->handle = *handle_ptr;
-    // memcpy(&(semaphore->handle), handle_ptr, sizeof(sem_t));
-
-    return 0;
+    return semaphore->handle == SEM_FAILED;
 #else
     return sem_init(&semaphore->handle, 0, initial_value);
 #endif
@@ -342,14 +333,22 @@ int dthread_semaphore_wait(DThreadSemaphore* semaphore)
 {
     dthread_debug("dthread_semaphore_wait");
 
+#ifdef __APPLE__
+    return sem_wait(semaphore->handle);
+#else
     return sem_wait(&semaphore->handle);
+#endif
 }
 
 int dthread_semaphore_post(DThreadSemaphore* semaphore)
 {
     dthread_debug("dthread_semaphore_post");
 
+#ifdef __APPLE__
+    return sem_post(semaphore->handle);
+#else
     return sem_post(&semaphore->handle);
+#endif
 }
 
 int dthread_semaphore_destroy(DThreadSemaphore* semaphore)
@@ -357,8 +356,8 @@ int dthread_semaphore_destroy(DThreadSemaphore* semaphore)
     dthread_debug("dthread_semaphore_destroy");
 
 #ifdef __APPLE__
-    // 👉 NOTE: On macOS, we should use sem_close and sem_unlink for named semaphores
-    if (sem_close(&semaphore->handle) == -1)
+    // Use sem_close and sem_unlink for named semaphores
+    if (sem_close(semaphore->handle) == -1)
     {
         perror("sem_close failed");
         return -1;
