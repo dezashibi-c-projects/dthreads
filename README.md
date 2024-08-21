@@ -69,13 +69,15 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
   - **dthread_mutex_trylock**: Attempts to lock a mutex without blocking.
   - **dthread_mutex_unlock**: Unlocks a mutex.
   - **dthread_mutex_destroy**: Destroys a mutex, releasing its resources.
-  
+
 - **Condition Variables**:
   - **dthread_cond_init**: Initializes a condition variable with optional attributes.
   - **dthread_cond_signal**: Signals a condition variable, waking one waiting thread.
   - **dthread_cond_broadcast**: Broadcasts a condition variable, waking all waiting threads.
   - **dthread_cond_destroy**: Destroys a condition variable, releasing its resources.
   - **dthread_cond_wait**: Waits on a condition variable, releasing the associated mutex and blocking the calling thread until the condition is signaled.
+
+**👉 NOTE:** If you want to make sure `clock` in condition attributes and`robust` in mutex atributes are available in your desired `POSIX` system you can check if `DTHREAD_MUTEX_ROBUST_AND_COND_CLOCK_AVAILABLE` is defined.
 
 ### Advanced Features (Optional)
 

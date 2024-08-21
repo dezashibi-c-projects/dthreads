@@ -24,6 +24,10 @@
 #include <semaphore.h>
 #include <stddef.h>
 
+#if defined(_XOPEN_SOURCE) && (_XOPEN_SOURCE >= 700)
+#define DTHREAD_MUTEX_ROBUST_AND_COND_CLOCK_AVAILABLE
+#endif
+
 typedef pthread_t _DThreadHandle;
 
 typedef struct DThreadAttr
@@ -48,7 +52,9 @@ typedef struct DThreadMutexAttr
 {
     int pshared;
     int type;
+#ifdef DTHREAD_MUTEX_ROBUST_AND_COND_CLOCK_AVAILABLE
     int robust;
+#endif
     int protocol;
     int prioceiling;
 } DThreadMutexAttr;
@@ -61,7 +67,9 @@ typedef struct DThreadCond
 typedef struct DThreadCondAttr
 {
     int pshared;
+#ifdef DTHREAD_MUTEX_ROBUST_AND_COND_CLOCK_AVAILABLE
     int clock;
+#endif
 } DThreadCondAttr;
 
 typedef struct DThreadRWLock

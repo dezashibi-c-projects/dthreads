@@ -1,3 +1,13 @@
+## v0.9.70-beta
+
+**Release Date: 2024-08-21**
+
+- improve macros by removing redundant checking
+- fix problem on apple devices
+- tested on apple, linux, windows, works as expected
+
+=======
+
 ## v0.9.52-stable
 
 **Updated on 2024-08-16**
