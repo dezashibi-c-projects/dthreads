@@ -13,6 +13,7 @@
 // *  Description: Refer to readme for documentation or dthread.h
 // ***************************************************************************************
 
+#define DTHREAD_DEBUG
 #define DTHREAD_IMPL
 #include "../dthreads/dthread.h"
 
@@ -93,8 +94,6 @@ int main(void)
     {
         dthread_join(&threads[i]);
     }
-
-    printf("happens here!\n");
 
     // Cleanup semaphore
     dthread_semaphore_destroy(&sem);
