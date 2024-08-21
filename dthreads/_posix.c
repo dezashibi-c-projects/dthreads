@@ -329,8 +329,10 @@ int dthread_semaphore_init(DThreadSemaphore* semaphore, dthread_uint_t initial_v
         return -1;
     }
 
-    semaphore->handle = *handle_ptr;
-    sem_close(handle_ptr);
+    // semaphore->handle = *handle_ptr;
+    // sem_close(handle_ptr);
+    memcpy(&(semaphore->handle), handle_ptr, sizeof(sem_t));
+
     return 0;
 #else
     return sem_init(&semaphore->handle, 0, initial_value);
