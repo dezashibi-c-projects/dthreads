@@ -32,6 +32,9 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 ### Key Design Choices
 
 - **Cross-Platform Compatibility**: DThreads provides a unified API that works across different platforms, hiding the underlying implementation details.
+
+**👉 NOTE:** The goal is to provide cross-platform compatibility for modern desktop systems and platforms, so you have to make sure certain features are available on your machine, you can suggest platform support via issue section.
+
 - **Modularity**: I've not been a friend of everything all at one place, so I've decided to modularize the implementations for each platform to its corresponding header and source file.
 - **Simplicity**: The API is designed to be easy to use, with clear and concise function signatures and configuration structures.
 - **Performance**: DThreads aims to minimize overhead by using lightweight structures and efficient synchronization primitives.
@@ -76,19 +79,19 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 
 ### Advanced Features (Optional)
 
-- **Read-Write Locks** (if `DTHREAD_RWLOCK_AVAILABLE` is defined):
+- **Read-Write Locks**:
   - **dthread_rwlock_init**: Initializes a read-write lock.
   - **dthread_rwlock_rdlock**: Acquires a read lock on the read-write lock.
   - **dthread_rwlock_unlock**: Unlocks the read-write lock.
   - **dthread_rwlock_wrlock**: Acquires a write lock on the read-write lock.
   - **dthread_rwlock_destroy**: Destroys the read-write lock.
   
-- **Barriers** (if `DTHREAD_BARRIER_AVAILABLE` is defined):
+- **Barriers**:
   - **dthread_barrier_init**: Initializes a barrier for a specified number of threads.
   - **dthread_barrier_wait**: Waits at a barrier until the specified number of threads have reached the barrier.
   - **dthread_barrier_destroy**: Destroys the barrier, releasing its resources.
   
-- **Semaphores** (if `DTHREAD_SEMAPHORE_AVAILABLE` is defined):
+- **Semaphores**:
   - **dthread_semaphore_init**: Initializes a semaphore with the specified initial value.
   - **dthread_semaphore_wait**: Waits on a semaphore, decrementing its value.
   - **dthread_semaphore_post**: Posts to a semaphore, incrementing its value.
@@ -142,44 +145,6 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 - **`DThreadSemaphore`**  
   Represents a semaphore in the DThreads library.  
   The `DThreadSemaphore` structure is used to control access to a resource by multiple threads. Semaphores are used to limit the number of threads that can access a resource concurrently.
-
-### **Constant Macro Documentation**
-
-#### **`DTHREAD_RWLOCK_AVAILABLE`**
-
-This macro indicates the availability of read-write locks (RWLocks) within the DThreads library. If this macro is defined, it means that the platform supports RWLocks, and the corresponding APIs (`dthread_rwlock_init`, `dthread_rwlock_rdlock`, etc.) are available for use. On platforms where RWLocks are not supported, this macro is undefined, and the RWLock-related APIs will not be available.
-
-#### **`DTHREAD_CREATION_FLAG_AVAILABLE`**
-
-This macro signifies that thread creation flags are available on the platform. These flags allow additional control over thread behavior at the time of creation, such as setting the thread to be created in a suspended state. If this macro is defined, the `DThreadAttr` structure includes a `dwCreationFlags` member for Windows or an equivalent in POSIX systems.
-
-#### **`DTHREAD_BARRIER_AVAILABLE`**
-
-This macro indicates whether barrier synchronization primitives are supported on the platform. A barrier is a point where multiple threads must wait until all have reached the barrier before any can proceed. If this macro is defined, the barrier-related functions (`dthread_barrier_init`, `dthread_barrier_wait`, etc.) are available. If not defined, barrier synchronization is not supported on the platform, and these functions will not be present.
-
-#### **`DTHREAD_SEMAPHORE_AVAILABLE`**
-
-This macro indicates the availability of semaphores within the DThreads library. Semaphores are synchronization primitives used to control access to a common resource by multiple threads. If this macro is defined, semaphore-related functions (`dthread_semaphore_init`, `dthread_semaphore_wait`, etc.) are available for use. In the absence of this macro, semaphore support is not provided by the platform, and these functions will be excluded.
-
-#### **`DTHREAD_MUTEX_TYPE_AVAILABLE`**
-
-This macro is used to indicate whether the platform supports different types of mutexes. In POSIX systems, this corresponds to the availability of `pthread_mutexattr_settype`. The `DThreadMutexAttr` structure will include a `type` member to specify the mutex type, such as normal, recursive, or error-checking. If this macro is not defined, only the default mutex type is supported.
-
-#### **`DTHREAD_MUTEX_ROBUST_AVAILABLE`**
-
-This macro indicates the availability of robust mutexes, which are designed to handle cases where a thread holding a mutex is terminated without releasing it. If defined, the `DThreadMutexAttr` structure will include a `robust` member, and functions like `dthread_mutex_init` will support robust mutex attributes. In the absence of this macro, robust mutexes are not supported.
-
-#### **`DTHREAD_MUTEX_PROTOCOL_AVAILABLE`**
-
-This macro denotes the availability of mutex protocol attributes, which control the priority inversion handling mechanism. If defined, the `DThreadMutexAttr` structure includes a `protocol` member to specify the mutex protocol. This feature is primarily available on real-time operating systems and is not commonly supported on all platforms.
-
-#### **`DTHREAD_MUTEX_PRIOCEILING_AVAILABLE`**
-
-This macro indicates that the platform supports the priority ceiling attribute for mutexes. If defined, the `DThreadMutexAttr` structure will include a `prioceiling` member, allowing you to set the priority ceiling for mutexes to prevent priority inversion. If not defined, priority ceiling is not supported by the platform.
-
-#### **`DTHREAD_DEBUG`**
-
-This macro is used to control the logging of debug information within the DThreads library. When defined, it enables the `dthread_debug` and `dthread_debug_args` function macros, which logs internal operations and state changes. This is useful for development and troubleshooting but should be disabled in production builds to avoid performance overhead.
 
 ## Usage Guide
 
@@ -303,7 +268,9 @@ dthread_barrier_wait(&barrier);
 dthread_barrier_destroy(&barrier);
 ```
 
-### Debugging Macro
+### Debugging Macro **(`DTHREAD_DEBUG`)**
+
+This macro is used to control the logging of debug information within the DThreads library. When defined, it enables the `dthread_debug` and `dthread_debug_args` function macros, which logs internal operations and state changes. This is useful for development and troubleshooting but should be disabled in production builds to avoid performance overhead.
 
 You can add whether `#define DTHREAD_DEBUG` before including the header file or passing `-DDTHREAD_DEBUG` to your compiler to activate debug messages.
 

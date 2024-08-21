@@ -35,10 +35,8 @@ int dthread_create(DThread* thread, DThreadAttr* attr)
         if (attr->guardsize)
             pthread_attr_setguardsize(&p_attr, attr->guardsize);
 
-#ifdef DTHREAD_THREAD_INHERITSCHED_AVAILABLE
         if (attr->inheritsched)
             pthread_attr_setinheritsched(&p_attr, attr->inheritsched);
-#endif
 
         if (attr->schedpolicy)
             pthread_attr_setschedpolicy(&p_attr, attr->schedpolicy);
@@ -46,10 +44,8 @@ int dthread_create(DThread* thread, DThreadAttr* attr)
         if (attr->scope)
             pthread_attr_setscope(&p_attr, attr->scope);
 
-#ifdef DTHREAD_THREAD_STACK_AVAILABLE
         if (attr->stack)
             pthread_attr_setstack(&p_attr, attr->stackaddr, attr->stack);
-#endif
 
         if (attr->stacksize)
             pthread_attr_setstacksize(&p_attr, attr->stacksize);
@@ -121,25 +117,18 @@ int dthread_mutex_init(DThreadMutex* mutex, DThreadMutexAttr* attr)
             return 1;
         if (attr->pshared)
             pthread_mutexattr_setpshared(&p_attr, attr->pshared);
-#ifdef DTHREAD_MUTEX_TYPE_AVAILABLE
+
         if (attr->type)
             pthread_mutexattr_settype(&p_attr, attr->type);
-#endif
 
-#ifdef DTHREAD_MUTEX_ROBUST_AVAILABLE
         if (attr->robust)
             pthread_mutexattr_setrobust(&p_attr, attr->robust);
-#endif
 
-#ifdef DTHREAD_MUTEX_PROTOCOL_AVAILABLE
         if (attr->protocol)
             pthread_mutexattr_setprotocol(&p_attr, attr->protocol);
-#endif
 
-#ifdef DTHREAD_MUTEX_PRIOCEILING_AVAILABLE
         if (attr->prioceiling)
             pthread_mutexattr_setprioceiling(&p_attr, attr->prioceiling);
-#endif
     }
 
     return pthread_mutex_init(&mutex->handle, attr ? &p_attr : NULL);
@@ -187,10 +176,8 @@ int dthread_cond_init(DThreadCond* cond, DThreadCondAttr* attr)
         if (attr->pshared)
             pthread_condattr_setpshared(&p_attr, attr->pshared);
 
-#ifdef DTHREAD_COND_CLOCK_AVAILABLE
         if (attr->clock)
             pthread_condattr_setclock(&p_attr, attr->clock);
-#endif
     }
 
     return pthread_cond_init(&cond->handle, attr ? &p_attr : NULL);
@@ -223,8 +210,6 @@ int dthread_cond_wait(DThreadCond* cond, DThreadMutex* mutex)
 
     return pthread_cond_wait(&cond->handle, &mutex->handle);
 }
-
-#ifdef DTHREAD_RWLOCK_AVAILABLE
 
 int dthread_rwlock_init(DThreadRWLock* rwlock)
 {
@@ -261,10 +246,6 @@ int dthread_rwlock_destroy(DThreadRWLock* rwlock)
     return pthread_rwlock_destroy(&rwlock->handle);
 }
 
-#endif
-
-#ifdef DTHREAD_BARRIER_AVAILABLE
-
 void dthread_barrier_init(DThreadBarrier* barrier, int num_threads)
 {
     dthread_debug("dthread_barrier_init");
@@ -286,10 +267,6 @@ void dthread_barrier_destroy(DThreadBarrier* barrier)
 
     pthread_barrier_destroy(&barrier->handle);
 }
-
-#endif
-
-#ifdef DTHREAD_SEMAPHORE_AVAILABLE
 
 int dthread_semaphore_init(DThreadSemaphore* semaphore, dthread_uint_t initial_value)
 {
@@ -318,5 +295,3 @@ int dthread_semaphore_destroy(DThreadSemaphore* semaphore)
 
     return sem_destroy(&semaphore->handle);
 }
-
-#endif

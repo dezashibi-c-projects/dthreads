@@ -197,8 +197,6 @@ int dthread_cond_wait(DThreadCond* cond, DThreadMutex* mutex)
     return !SleepConditionVariableCS(&cond->handle, &mutex->handle, INFINITE);
 }
 
-#ifdef DTHREAD_RWLOCK_AVAILABLE
-
 int dthread_rwlock_init(DThreadRWLock* rwlock)
 {
     dthread_debug("dthread_rwlock_init");
@@ -272,10 +270,6 @@ int dthread_rwlock_destroy(DThreadRWLock* rwlock)
     return 0;
 }
 
-#endif
-
-#ifdef DTHREAD_BARRIER_AVAILABLE
-
 void dthread_barrier_init(DThreadBarrier* barrier, int num_threads)
 {
     dthread_debug("dthread_barrier_init");
@@ -314,10 +308,6 @@ void dthread_barrier_destroy(DThreadBarrier* barrier)
     DeleteCriticalSection(&barrier->cs);
 }
 
-#endif
-
-#ifdef DTHREAD_SEMAPHORE_AVAILABLE
-
 int dthread_semaphore_init(DThreadSemaphore* semaphore, dthread_uint_t initial_value)
 {
     dthread_debug("dthread_semaphore_init");
@@ -346,5 +336,3 @@ int dthread_semaphore_destroy(DThreadSemaphore* semaphore)
 
     return CloseHandle(semaphore->handle) ? 0 : -1;
 }
-
-#endif

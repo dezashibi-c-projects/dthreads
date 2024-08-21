@@ -24,11 +24,6 @@
 #include <synchapi.h>
 #include <windows.h>
 
-#define DTHREAD_RWLOCK_AVAILABLE
-#define DTHREAD_CREATION_FLAG_AVAILABLE
-#define DTHREAD_BARRIER_AVAILABLE
-#define DTHREAD_SEMAPHORE_AVAILABLE
-
 typedef HANDLE _DThreadHandle;
 
 typedef struct DThreadAttr
@@ -57,17 +52,11 @@ typedef struct DThreadCondAttr
     void* nothing;
 } DThreadCondAttr;
 
-#ifdef DTHREAD_RWLOCK_AVAILABLE
-
 typedef struct DThreadRWLock
 {
     int type;
     PSRWLOCK handle;
 } DThreadRWLock;
-
-#endif
-
-#ifdef DTHREAD_BARRIER_AVAILABLE
 
 typedef struct DThreadBarrier
 {
@@ -75,19 +64,12 @@ typedef struct DThreadBarrier
     CONDITION_VARIABLE cv;
     int count;
     int waiting;
-
     int num_threads;
 } DThreadBarrier;
-
-#endif
-
-#ifdef DTHREAD_SEMAPHORE_AVAILABLE
 
 typedef struct DThreadSemaphore
 {
     HANDLE handle;
 } DThreadSemaphore;
-
-#endif
 
 #endif // DTHREAD_WINDOWS_H_
