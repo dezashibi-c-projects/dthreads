@@ -355,12 +355,22 @@ int dthread_semaphore_destroy(DThreadSemaphore* semaphore)
 {
     dthread_debug("dthread_semaphore_destroy");
 
-    // #ifdef __APPLE__
-    //     sem_close(semaphore->handle);
-    //     sem_unlink("/dthread_semaphore_osx");
+#ifdef __APPLE__
+    // 👉 NOTE: On macOS, we should use sem_close and sem_unlink for named semaphores
+    if (sem_close(&semaphore->handle) == -1)
+    {
+        perror("sem_close failed");
+        return -1;
+    }
 
-    //     return 0;
-    // #else
-    // #endif
+    if (sem_unlink("/dthread_semaphore_osx") == -1)
+    {
+        perror("sem_unlink failed");
+        return -1;
+    }
+
+    return 0;
+#else
     return sem_destroy(&semaphore->handle);
+#endif
 }
