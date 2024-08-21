@@ -321,13 +321,17 @@ int dthread_semaphore_init(DThreadSemaphore* semaphore, dthread_uint_t initial_v
 
 #ifdef __APPLE__
     sem_unlink("/dthread_semaphore_osx");
-    sem_t* handle_ptr = sem_open("/dthread_semaphore_osx", O_CREAT, 0644, 1);
+    sem_t* handle_ptr = sem_open("/dthread_semaphore_osx", O_CREAT, 0644, initial_value);
+
     if (handle_ptr == SEM_FAILED)
     {
         perror("sem_open failed");
-        exit(EXIT_FAILURE);
+        return -1;
     }
-    memcpy(&(semaphore->handle), handle_ptr, sizeof(sem_t));
+
+    semaphore->handle = *handle_ptr;
+    sem_close(handle_ptr);
+    return 0;
 #else
     return sem_init(&semaphore->handle, 0, initial_value);
 #endif
