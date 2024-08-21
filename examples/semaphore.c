@@ -94,6 +94,8 @@ int main(void)
         dthread_join(&threads[i]);
     }
 
+    printf("happens here!\n");
+
     // Cleanup semaphore
     dthread_semaphore_destroy(&sem);
 
