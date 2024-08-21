@@ -250,29 +250,88 @@ void dthread_barrier_init(DThreadBarrier* barrier, int num_threads)
 {
     dthread_debug("dthread_barrier_init");
 
+#ifdef __APPLE__
+    if (num_threads <= 0)
+    {
+        return -1;
+    }
+
+    if (pthread_mutex_init(&barrier->mutex, NULL) != 0)
+    {
+        return -1;
+    }
+
+    if (pthread_cond_init(&barrier->cond, NULL) != 0)
+    {
+        pthread_mutex_destroy(&barrier->mutex);
+        return -1;
+    }
+
+    barrier->trip_count = num_threads;
+    barrier->num_threads = 0;
+    return 0;
+#else
     pthread_barrier_init(&barrier->handle, NULL, num_threads);
     barrier->num_threads = num_threads;
+#endif
 }
 
 void dthread_barrier_wait(DThreadBarrier* barrier)
 {
     dthread_debug("dthread_barrier_wait");
 
+#ifdef __APPLE__
+    pthread_mutex_lock(&barrier->mutex);
+    barrier->num_threads++;
+
+    if (barrier->num_threads >= barrier->trip_count)
+    {
+        barrier->num_threads = 0;
+        pthread_cond_broadcast(&barrier->cond);
+        pthread_mutex_unlock(&barrier->mutex);
+
+        return 1;
+    }
+    else
+    {
+        pthread_cond_wait(&barrier->cond, &barrier->mutex);
+        pthread_mutex_unlock(&barrier->mutex);
+
+        return 0;
+    }
+#else
     pthread_barrier_wait(&barrier->handle);
+#endif
 }
 
 void dthread_barrier_destroy(DThreadBarrier* barrier)
 {
     dthread_debug("dthread_barrier_destroy");
 
+#ifdef __APPLE__
+    pthread_cond_destroy(&barrier->cond);
+    pthread_mutex_destroy(&barrier->mutex);
+#else
     pthread_barrier_destroy(&barrier->handle);
+#endif
 }
 
 int dthread_semaphore_init(DThreadSemaphore* semaphore, dthread_uint_t initial_value)
 {
     dthread_debug("dthread_semaphore_init");
 
+#ifdef __APPLE__
+    sem_unlink("/dthread_semaphore_osx");
+    sem_t* handle_ptr = sem_open("/dthread_semaphore_osx", O_CREAT, 0644, 1);
+    if (handle_ptr == SEM_FAILED)
+    {
+        perror("sem_open failed");
+        exit(EXIT_FAILURE);
+    }
+    memcpy(&(semaphore->handle), handle_ptr, sizeof(sem_t));
+#else
     return sem_init(&semaphore->handle, 0, initial_value);
+#endif
 }
 
 int dthread_semaphore_wait(DThreadSemaphore* semaphore)
@@ -293,5 +352,12 @@ int dthread_semaphore_destroy(DThreadSemaphore* semaphore)
 {
     dthread_debug("dthread_semaphore_destroy");
 
+    // #ifdef __APPLE__
+    //     sem_close(semaphore->handle);
+    //     sem_unlink("/dthread_semaphore_osx");
+
+    //     return 0;
+    // #else
+    // #endif
     return sem_destroy(&semaphore->handle);
 }

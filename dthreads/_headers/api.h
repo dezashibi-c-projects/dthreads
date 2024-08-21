@@ -18,6 +18,7 @@
 #define DTHREAD_API_
 
 #include <stdint.h>
+#include <string.h>
 
 #include <limits.h>
 #include <stdint.h>

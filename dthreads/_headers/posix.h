@@ -71,7 +71,13 @@ typedef struct DThreadRWLock
 
 typedef struct DThreadBarrier
 {
+#ifdef __APPLE__
+    pthread_mutex_t mutex;
+    pthread_cond_t cond;
+    int trip_count;
+#else
     pthread_barrier_t handle;
+#endif
     int num_threads;
 } DThreadBarrier;
 
