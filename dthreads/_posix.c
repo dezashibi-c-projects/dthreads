@@ -257,23 +257,22 @@ void dthread_barrier_init(DThreadBarrier* barrier, int num_threads)
 #ifdef __APPLE__
     if (num_threads <= 0)
     {
-        return -1;
+        return;
     }
 
     if (pthread_mutex_init(&barrier->mutex, NULL) != 0)
     {
-        return -1;
+        return;
     }
 
     if (pthread_cond_init(&barrier->cond, NULL) != 0)
     {
         pthread_mutex_destroy(&barrier->mutex);
-        return -1;
+        return;
     }
 
     barrier->trip_count = num_threads;
     barrier->num_threads = 0;
-    return 0;
 #else
     pthread_barrier_init(&barrier->handle, NULL, num_threads);
     barrier->num_threads = num_threads;
@@ -293,15 +292,11 @@ void dthread_barrier_wait(DThreadBarrier* barrier)
         barrier->num_threads = 0;
         pthread_cond_broadcast(&barrier->cond);
         pthread_mutex_unlock(&barrier->mutex);
-
-        return 1;
     }
     else
     {
         pthread_cond_wait(&barrier->cond, &barrier->mutex);
         pthread_mutex_unlock(&barrier->mutex);
-
-        return 0;
     }
 #else
     pthread_barrier_wait(&barrier->handle);
