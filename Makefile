@@ -51,4 +51,4 @@ $(SRCDIR)/%$(TARGET_EXT): $(SRCDIR)/%.c
 	$(BUILDCMD) $< -o $@
 
 clean:
-	rm -rf $(TARGETS) $(SRCDIR)/*.pdb $(SRCDIR)/*.o $(SRCDIR)/*.obj output.txt $(SRCDIR)/output.txt dthreads.zip
+	rm -rf $(TARGETS) $(SRCDIR)/*.pdb $(SRCDIR)/*.o $(SRCDIR)/*.obj output.txt $(SRCDIR)/output.txt dthreads.zip $(SRCDIR)/*.dSYM

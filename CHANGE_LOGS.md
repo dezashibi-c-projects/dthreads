@@ -1,4 +1,4 @@
-## v0.9.70-beta
+## v0.9.70-stable
 
 **Release Date: 2024-08-21**
 
