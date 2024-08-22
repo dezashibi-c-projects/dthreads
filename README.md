@@ -163,7 +163,7 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
 - the specific version (remember to change `<version>` with the version you need)
 
 ```bash
-https://github.com/dezashibi-c/dthreads/releases/download/<version>/dthreads.zip
+wget https://github.com/dezashibi-c/dthreads/releases/download/<version>/dthreads.zip
 ```
 
 ### Including DThreads in Your Project
