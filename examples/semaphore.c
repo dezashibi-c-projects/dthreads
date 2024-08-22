@@ -80,7 +80,7 @@ int main(void)
     for (int i = 0; i < NUM_THREADS; ++i)
     {
         thread_ids[i] = i;
-        threads[i] = dthread_new_config(thread_func, &thread_ids[i]);
+        threads[i] = dthread_init_thread(thread_func, &thread_ids[i]);
 
         if (dthread_create(&threads[i], NULL) != 0)
         {

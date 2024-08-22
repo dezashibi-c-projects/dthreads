@@ -46,7 +46,7 @@ int main(void)
 {
     dthread_rng_init();
 
-    DThread thread = dthread_new_config(roll_dice, NULL);
+    DThread thread = dthread_init_thread(roll_dice, NULL);
 
     if (dthread_create(&thread, NULL) != 0)
     {

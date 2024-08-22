@@ -116,6 +116,8 @@ The core philosophy behind DThreads is to create a minimalistic, yet powerful, t
   Represents a thread in the DThreads library.  
   The `DThread` structure is used to manage and identify individual threads created and managed by the DThreads library. It abstracts the underlying platform-specific thread representation. It also holds the reference to thread routine, thread routine data and thread result.
 
+  **👉 Initialization:** You can initialize a thread by using `dthread_init_thread` macro, refer to examples below.
+
 - **`DThreadAttr`**  
   Attributes for thread creation.  
   The `DThreadAttr` structure is used to specify attributes for threads when they are created. This includes options like stack size, thread priority, and other platform-specific attributes that influence the behavior of the thread.
@@ -196,7 +198,7 @@ dthread_define_routine(my_thread_function) {
 }
 
 int main() {
-    DThread thread = dthread_new_config(my_thread_function, NULL);
+    DThread thread = dthread_init_thread(my_thread_function, NULL);
 
     dthread_create(&thread, NULL);
     dthread_join(&thread);

@@ -69,7 +69,7 @@ int main(void)
     int i;
     for (i = 0; i < THREAD_NUM; i++)
     {
-        th[i] = dthread_new_config(routine, malloc(sizeof(int)));
+        th[i] = dthread_init_thread(routine, malloc(sizeof(int)));
         dthread_set_data(&th[i], int*, i);
 
         if (dthread_create(&th[i], NULL) != 0)

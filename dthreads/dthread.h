@@ -108,7 +108,7 @@ extern "C"
     } DThread;
 
 /**
- * @macro dthread_new_config
+ * @macro dthread_init_thread
  * @brief Initializes a DThread structure.
  *
  * This macro simplifies the initialization of a DThread structure by allowing you
@@ -117,7 +117,7 @@ extern "C"
  * @param FUNC The thread routine function.
  * @param DATA The data to pass to the thread routine.
  */
-#define dthread_new_config(FUNC, DATA) \
+#define dthread_init_thread(FUNC, DATA) \
     (DThread)                          \
     {                                  \
         ._func = FUNC,                 \

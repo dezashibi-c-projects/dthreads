@@ -51,7 +51,7 @@ int main(void)
     // Create threads
     for (int i = 0; i < NUM_THREADS; ++i)
     {
-        threads[i] = dthread_new_config(thread_func, NULL);
+        threads[i] = dthread_init_thread(thread_func, NULL);
 
         if (dthread_create(&threads[i], NULL) != 0)
         {

@@ -1,7 +1,8 @@
-## v0.9.70-stable
+## v0.9.71-stable
 
-**Release Date: 2024-08-21**
+**Release Date: 2024-08-22**
 
+- rename dthread_new_config to dthread_init_thread for better readability
 - improve macros by removing redundant checking
 - fix problem on apple devices
 - tested on apple, linux, windows, works as expected
