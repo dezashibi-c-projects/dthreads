@@ -79,7 +79,7 @@ _DThreadHandle dthread_self(void)
 {
     dthread_debug("dthread_self");
 
-    return GetCurrentThread();
+    return (void*)(uintptr_t)GetCurrentThreadId();
 }
 
 dthread_ulong_t dthread_id(DThread* thread)
@@ -201,12 +201,13 @@ int dthread_rwlock_init(DThreadRWLock* rwlock)
 {
     dthread_debug("dthread_rwlock_init");
 
-    rwlock->handle = malloc(sizeof(SRWLOCK));
-
+    rwlock->handle = (PSRWLOCK)malloc(sizeof(SRWLOCK));
     if (!rwlock->handle)
         return 1;
 
     InitializeSRWLock(rwlock->handle);
+
+    rwlock->type = 0;
 
     return 0;
 }
@@ -224,23 +225,14 @@ int dthread_rwlock_rdlock(DThreadRWLock* rwlock)
 
 int dthread_rwlock_unlock(DThreadRWLock* rwlock)
 {
-    dthread_debug("dthread_rwlock_unlock");
-
-    switch (rwlock->type)
-    {
-    case 1:
+    if (rwlock->type == 1)
     {
         ReleaseSRWLockShared(rwlock->handle);
-
-        break;
     }
 
-    case 2:
+    else if (rwlock->type == 2)
     {
         ReleaseSRWLockExclusive(rwlock->handle);
-
-        break;
-    }
     }
 
     rwlock->type = 0;
@@ -264,7 +256,7 @@ int dthread_rwlock_destroy(DThreadRWLock* rwlock)
     dthread_debug("dthread_rwlock_destroy");
 
     free(rwlock->handle);
-    rwlock->handle = NULL;
+    rwlock->handle = NULL; // Reset handle to NULL to avoid dangling pointer
     rwlock->type = 0;
 
     return 0;

@@ -118,11 +118,11 @@ extern "C"
  * @param DATA The data to pass to the thread routine.
  */
 #define dthread_init_thread(FUNC, DATA) \
-    (DThread)                          \
-    {                                  \
-        ._func = FUNC,                 \
-        ._data = (void*)(DATA),        \
-        ._result = NULL                \
+    (DThread)                           \
+    {                                   \
+        ._func = FUNC,                  \
+        ._data = (void*)(DATA),         \
+        ._result = NULL                 \
     }
 
 /**
@@ -349,8 +349,6 @@ extern "C"
      */
     DTHREAD_API int dthread_cond_wait(DThreadCond* cond, DThreadMutex* mutex);
 
-#ifdef DTHREAD_RWLOCK_AVAILABLE
-
     /**
      * @brief Initializes a read-write lock.
      *
@@ -401,10 +399,6 @@ extern "C"
      */
     DTHREAD_API int dthread_rwlock_destroy(DThreadRWLock* rwlock);
 
-#endif
-
-#ifdef DTHREAD_BARRIER_AVAILABLE
-
     /**
      * @brief Initializes a barrier.
      *
@@ -432,10 +426,6 @@ extern "C"
      * @param barrier A pointer to the barrier to destroy.
      */
     DTHREAD_API void dthread_barrier_destroy(DThreadBarrier* barrier);
-
-#endif
-
-#ifdef DTHREAD_SEMAPHORE_AVAILABLE
 
     /**
      * @brief Initializes a semaphore.
@@ -477,8 +467,6 @@ extern "C"
      * @return 0 on success, non-zero on failure.
      */
     DTHREAD_API int dthread_semaphore_destroy(DThreadSemaphore* semaphore);
-
-#endif
 
 #include "_headers/random.h"
 #ifdef __cplusplus
