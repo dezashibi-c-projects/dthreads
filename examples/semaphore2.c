@@ -26,7 +26,7 @@
 
 #define xsleep(x) Sleep((x))
 #else
-void xsleep(dthread_uint_t milliseconds)
+void xsleep(uint32_t milliseconds)
 {
     struct timespec ts;
     ts.tv_sec = milliseconds / 1000;

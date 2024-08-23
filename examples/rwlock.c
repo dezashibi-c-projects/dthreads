@@ -1,4 +1,3 @@
-
 #define DTHREAD_DEBUG
 #define DTHREAD_IMPL
 #include "../dthreads/dthread.h"
@@ -8,7 +7,7 @@
 #include <windows.h>
 #define xsleep(x) Sleep((x))
 #else
-void xsleep(dthread_uint_t milliseconds)
+void xsleep(uint32_t milliseconds)
 {
     struct timespec ts;
     ts.tv_sec = milliseconds / 1000;
@@ -30,14 +29,20 @@ dthread_define_routine(reader)
 
     for (int i = 0; i < NUM_ITERATIONS; i++)
     {
+        dthread_debug("Reader attempting to acquire read lock");
+
         // Acquire read lock
         dthread_rwlock_rdlock(&rwlock);
 
+        dthread_debug("Reader acquired read lock");
+
         // Read the shared data
-        printf("Reader %zu read shared_data = %d\n", (dthread_ullong_t)dthread_self(), shared_data);
+        printf("Reader %zu read shared_data = %d\n", dthread_self(), shared_data);
 
         // Release read lock
         dthread_rwlock_unlock(&rwlock);
+
+        dthread_debug("Reader released read lock");
 
         // Simulate some work
         xsleep(1000);
@@ -51,15 +56,21 @@ dthread_define_routine(writer)
 
     for (int i = 0; i < NUM_ITERATIONS; i++)
     {
+        dthread_debug("Writer attempting to acquire write lock");
+
         // Acquire write lock
         dthread_rwlock_wrlock(&rwlock);
 
+        dthread_debug("Writer acquired write lock");
+
         // Modify the shared data
         shared_data++;
-        printf("Writer %zu modified shared_data to %d\n", (dthread_ullong_t)dthread_self(), shared_data);
+        printf("Writer %zu modified shared_data to %d\n", dthread_self(), shared_data);
 
         // Release write lock
         dthread_rwlock_unlock(&rwlock);
+
+        dthread_debug("Writer released write lock");
 
         // Simulate some work
         xsleep(2000);
@@ -74,33 +85,36 @@ int main()
 
     // Initialize the read-write lock
     dthread_rwlock_init(&rwlock);
+    dthread_debug("Read-write lock initialized");
 
-    // Create reader threads
     for (int i = 0; i < NUM_READERS; i++)
     {
         readers[i] = dthread_init_thread(reader, NULL);
         dthread_create(&readers[i], NULL);
+        dthread_debug("Reader thread created");
     }
 
-    // Create writer threads
     for (int i = 0; i < NUM_WRITERS; i++)
     {
         writers[i] = dthread_init_thread(writer, NULL);
         dthread_create(&writers[i], NULL);
+        dthread_debug("Writer thread created");
     }
 
-    // Join all threads
     for (int i = 0; i < NUM_READERS; i++)
     {
         dthread_join(&readers[i]);
+        dthread_debug("Reader thread joined");
     }
 
     for (int i = 0; i < NUM_WRITERS; i++)
     {
         dthread_join(&writers[i]);
+        dthread_debug("Writer thread joined");
     }
 
     dthread_rwlock_destroy(&rwlock);
+    dthread_debug("Read-write lock destroyed");
 
     return 0;
 }

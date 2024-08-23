@@ -215,7 +215,7 @@ extern "C"
      *
      * @return A DThread structure representing the current thread.
      */
-    DTHREAD_API _DThreadHandle dthread_self(void);
+    DTHREAD_API uintptr_t dthread_self(void);
 
     /**
      * @brief Returns the ID of a thread.
@@ -223,9 +223,9 @@ extern "C"
      * This function returns the unique identifier of the specified thread.
      *
      * @param thread The pointer to the thread whose ID to retrieve.
-     * @return The thread's ID as an dthread_ulong_t.
+     * @return The thread's ID as an uintptr_t.
      */
-    DTHREAD_API dthread_ulong_t dthread_id(DThread* thread);
+    DTHREAD_API uintptr_t dthread_id(DThread* thread);
 
     /**
      * @brief Exits the calling thread.
@@ -436,7 +436,7 @@ extern "C"
      * @param initial_value The initial value of the semaphore.
      * @return 0 on success, non-zero on failure.
      */
-    DTHREAD_API int dthread_semaphore_init(DThreadSemaphore* semaphore, dthread_uint_t initial_value);
+    DTHREAD_API int dthread_semaphore_init(DThreadSemaphore* semaphore, uint32_t initial_value);
 
     /**
      * @brief Waits on a semaphore.
