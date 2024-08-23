@@ -1,7 +1,10 @@
-## v0.9.71-stable
+## v0.9.81-stable
 
-**Release Date: 2024-08-22**
+**Release Date: 2024-08-23**
 
+- add rw lock example
+- fix errors on windows
+- test on linux, windows, apple
 - rename dthread_new_config to dthread_init_thread for better readability
 - improve macros by removing redundant checking
 - fix problem on apple devices
