@@ -78,7 +78,7 @@ dthread_define_routine(writer)
     return NULL;
 }
 
-int main()
+int main(void)
 {
     DThread readers[NUM_READERS];
     DThread writers[NUM_WRITERS];
